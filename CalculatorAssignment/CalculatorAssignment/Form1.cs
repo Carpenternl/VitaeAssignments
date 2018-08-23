@@ -19,9 +19,7 @@ namespace CalculatorAssignment
 
         private void numPad1_ValueChanged(object sender, EventArgs e)
         {
-            NumPad target = sender as NumPad;
-            string result = target.GetStringValue();
-            this.textBox1.Text = result;
+            this.textBox1.Text = this.numPad1.PrintValue();
         }
     }
 }

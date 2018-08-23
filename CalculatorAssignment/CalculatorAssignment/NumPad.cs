@@ -12,76 +12,116 @@ namespace CalculatorAssignment
 {
     public partial class NumPad : UserControl
     {
+        // The Buffer will hold all the characters in sequence
+        private List<char> Buffer;
+        
         /// <summary>
-        /// Toggles the comma state
+        /// Gets the Current Value
         /// </summary>
-        private bool hasComma { get; set; }
-        //List of characters
-        private List<char> Buffer { get; set; }
-        private int CommaIndex;
-
-        public delegate void ValueClearedEventHandler(object sender, EventArgs e);
-        public delegate void ValueChangedEventHandler(object sender, EventArgs e);
-
-        /// <summary>
-        /// Occurs when the Value is changed
-        /// </summary>
-        public event ValueChangedEventHandler ValueChanged;
-        /// <summary>
-        /// Occurs when the Value is cleared
-        /// </summary>
-        public event ValueClearedEventHandler ValueCleared;
-        public string GetStringValue()
+        /// <returns></returns>
+        public double GetValue()
         {
-            char[] Bufferchars = Buffer.ToArray();
-            StringBuilder result = new StringBuilder();
-            foreach (var item in Bufferchars)
-            {
-                result.Append(item);
-            }
-            string bufferstring = result.ToString();
-            return bufferstring;
+            double result;
+            result = Convert.ToDouble(Buffer.ToArray().ToString());
+            return result;
         }
+        /// <summary>
+        /// Set's the Value of the Numpad
+        /// </summary>
+        /// <param name="newVal"></param>
+        public void SetValue(double newVal)
+        {
+            string newValString = newVal.ToString();
+            Buffer.Clear();
+            foreach (var CharVal in newValString)
+            {
+                Buffer.Add(CharVal);
+            }
+            ValueChanged(this, new EventArgs());
+        }
+        public string PrintValue()
+        {
+            string result = "";
+            while (Buffer.Count()>1 & Buffer.Count()<3 && Buffer[0] == '0')
+            {
+                Buffer.RemoveAt(0);
+            }
+            if (Buffer.Count()>0 && Buffer[0] == ',')
+            {
+                Buffer.Insert(0, '0');
+            }
+            char[] resultArray =  Buffer.ToArray();
+            StringBuilder resultbuilder = new StringBuilder();
+            for (int i = 0; i < resultArray.Length; i++)
+            {
+                resultbuilder.Append(resultArray[i]);
+            }
+            result = resultbuilder.ToString();
+            return result;
+        }
+        /// <summary>
+        /// When the value is changed, this event will fire
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public delegate void ValueChangedEventHandler(object sender, EventArgs e);
+        public event ValueChangedEventHandler ValueChanged;
+
         public NumPad()
         {
-            //create Buffer
             Buffer = new List<char>();
-            ValueChanged += Value_Changed_event;
             InitializeComponent();
         }
-        private void Value_Changed_event(object sender, EventArgs e)
-        {
 
-        }
-        private void numeric_Click(object sender, EventArgs e)
+        private void Button_Click(object sender, EventArgs e)
         {
-            Button Target = sender as Button;
-            Buffer.Add(Target.Text[0]);
-            ValueChanged(this, e);
+            Button target = sender as Button;
+            switch (target.Text[0]) 
+            {
+                case 'C':
+                    ClearValue(target);
+                    break;
+                case ',':
+                    ToggleComma(target);
+                    break;
+                default:
+                    AddNumber(target); 
+                    break;
+            }
         }
-        private void Clear_Click(object sender, EventArgs e)
+
+        private void AddNumber(Button target)
         {
-            Buffer.Clear();
-            ValueChanged(this, e);
+            // Cannot Spam 0's
+
+            Buffer.Add(target.Text[0]);
+            ValueChanged(this, new EventArgs());
         }
-        private void Comma_Click(object sender, EventArgs e)
-        {
-            ToggleComma();
-            ValueChanged(this, e);
-        }
-        private void ToggleComma()
+        /// <summary>
+        /// Toggles the Comma inside the value
+        /// </summary>
+        /// <param name="sender"></param>
+        private void ToggleComma(Button sender)
         {
             if (Buffer.Contains(','))
             {
                 Buffer.Remove(',');
-                hasComma = false;
             }
             else
-            {
+            { 
                 Buffer.Add(',');
-                CommaIndex = Buffer.Count - 1;
-                hasComma = true;
             }
+            if (Buffer.Count > 1)
+            {
+            ValueChanged(this, new EventArgs());
+            }
+        }
+
+        private void ClearValue(Button target)
+        {
+            this.Buffer.Clear();
+            ValueChanged(this, new EventArgs());
+            // throw new NotImplementedException();
         }
     }
 }
