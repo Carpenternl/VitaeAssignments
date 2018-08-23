@@ -1,9 +1,11 @@
-﻿namespace CalculatorAssignment
+﻿using System;
+
+namespace CalculatorAssignment
 {
     public class ValueNode : MathNode
     {
-        double Value;
-        public enum valuetype { none, Euro,Percentage}
+        public double Value;
+        public enum valuetype { none, Euro, Percentage }
         public valuetype Valuetype;
 
         public ValueNode(double value)
@@ -11,6 +13,7 @@
             this.Value = value;
             Valuetype = 0;
         }
+
         public override ValueNode Calculate()
         {
             throw new System.NotImplementedException();
@@ -19,27 +22,72 @@
         public static ValueNode operator +(ValueNode a, ValueNode b)
         {
             // Add a to b
-            // step 1, add double values to new valuenode
-            ValueNode result = new ValueNode(a.Value + b.Value);
-            //if both are percentages, treat as normal addition
-            if (a.Valuetype == valuetype.Percentage & b.Valuetype == valuetype.Percentage)
-                result.Valuetype = valuetype.Percentage;
-            // if only one is a percentage/ devide result by 100
-            if (a.Valuetype == valuetype.Percentage ^ b.Valuetype == valuetype.Percentage)
-            {
-                result.Value = result.Value * 0.01;
-                result.Valuetype = valuetype.none;
-            }
-            // if one is a Euro and the other is not a number, set valuetype to Euro
-            if (a.Valuetype == valuetype.Euro & b.Valuetype != valuetype.none)
-                result.Valuetype = valuetype.Euro;
+            // Get the Raw Value
+            double rawValue = a.Value + b.Value;
+            ValueNode result = GetConvertedValue(a.Valuetype, b.Valuetype,rawValue);
             return result;
-
         }
+        public static ValueNode operator -(ValueNode left, ValueNode right)
+        {
+            double RawValue = left.Value - right.Value;
+            ValueNode result = GetConvertedValue(left.Valuetype, right.Valuetype,RawValue);
+            return result;
+        }
+        public static ValueNode operator *(ValueNode left, ValueNode right)
+        {
+            double RawValue = left.Value * right.Value;
+            ValueNode Result = GetConvertedValue(left.Valuetype, right.Valuetype, RawValue);
+            return Result;
+        }
+        public static ValueNode operator /(ValueNode left, ValueNode right)
+        {
+            if (right.Value ==0)
+            {
+                throw new DivideByZeroException();
+            }
+            double RawValue = left.Value / right.Value;
+            ValueNode Result = GetConvertedValue(left.Valuetype, right.Valuetype, RawValue);
+            return Result;
+        }
+        private static ValueNode GetConvertedValue(valuetype a, valuetype b,double newvalue)
+        {
+            double ResultValue = newvalue;
+            valuetype ResultValueType = valuetype.none;
+            if (BothArePercentageValues(a, b))
+            {
+                ResultValueType = valuetype.Percentage;
+            }
+            if (OnlyOneIsAPercentageValue(a, b))
+            {
+                ResultValue = ResultValue * 0.01;
+                ResultValueType = valuetype.none;
+            }
+            if (OnlyOneIsValutaValue(a, b)) {
+                ResultValueType = valuetype.Euro;
+            }
+            ValueNode Result = new ValueNode(ResultValue) { Valuetype = ResultValueType };
+            return Result;
+        }
+
+        private static bool OnlyOneIsValutaValue(valuetype a, valuetype b)
+        {
+            return a == valuetype.Euro & b != valuetype.none;
+        }
+
+        private static bool OnlyOneIsAPercentageValue(valuetype a, valuetype b)
+        {
+            return a == valuetype.Percentage ^ b == valuetype.Percentage;
+        }
+
+        private static bool BothArePercentageValues(valuetype a, valuetype b)
+        {
+            return a == valuetype.Percentage & b == valuetype.Percentage;
+        }
+
         public override string ToString()
         {
             string result = "";
-            if(Valuetype== valuetype.Euro)
+            if (Valuetype == valuetype.Euro)
                 result += "€";
             result += Value.ToString();
             if (Valuetype == valuetype.Percentage)
@@ -64,7 +112,7 @@
             // TODO: write your implementation of Equals() here
             // My code
             ValueNode objEval = obj as ValueNode;
-            if(Valuetype != objEval.Valuetype)
+            if (Valuetype != objEval.Valuetype)
             {
                 return false;
             }
