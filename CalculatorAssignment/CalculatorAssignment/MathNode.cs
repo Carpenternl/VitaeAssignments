@@ -19,9 +19,8 @@
     }
     public class AddOperator : OperatorElement
     {
-        protected AddOperator(double Defaultval) : base(Defaultval)
+        public AddOperator(double Defaultval = 0) : base(Defaultval)
         {
-            Defaultval = 0;
         }
 
         public override ValueElement Calculate()
@@ -31,9 +30,8 @@
     }
     public class SubTractOperator : OperatorElement
     {
-        protected SubTractOperator(double Defaultval) : base(Defaultval)
+        public SubTractOperator(double Defaultval=0) : base(Defaultval)
         {
-            Defaultval = 0;
         }
 
         public override ValueElement Calculate()
@@ -41,11 +39,10 @@
             return left.Calculate() - right.Calculate();
         }
     }
-    class DivideOperator : OperatorElement
+    public class DivideOperator : OperatorElement
     {
-        public DivideOperator(double Defaultval) : base(Defaultval)
+        public DivideOperator(double Defaultval = 1) : base(Defaultval)
         {
-            Defaultval = 0;
         }
         public override ValueElement Calculate()
         {
@@ -60,11 +57,10 @@
             }
         }
     }
-    class MultiplyOperator : OperatorElement
+    public class MultiplyOperator : OperatorElement
     {
-        public MultiplyOperator(double defaultValue) : base(defaultValue)
+        public MultiplyOperator(double defaultValue = 1) : base(defaultValue)
         {
-            defaultValue = 0;
         }
         public override ValueElement Calculate()
         {

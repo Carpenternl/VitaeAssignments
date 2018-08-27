@@ -24,6 +24,5 @@ namespace CalculatorAssignment
             this.textBox1.Text = this.numPad1.PrintValue();
             Console.WriteLine(numPad1.GetValue().ToString());
         }
-        
     }
 }

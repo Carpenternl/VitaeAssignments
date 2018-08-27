@@ -60,6 +60,7 @@
     <Compile Include="NumPad.Designer.cs">
       <DependentUpon>NumPad.cs</DependentUpon>
     </Compile>
+    <Compile Include="OperatorInterperter.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ValueNode.cs" />
