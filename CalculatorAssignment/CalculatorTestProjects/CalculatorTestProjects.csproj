@@ -57,9 +57,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CalculatorAssignment\SimpleCalculator.csproj">
+    <ProjectReference Include="..\CalculatorAssignment\CalculatorAssignment.csproj">
       <Project>{3643D3C0-200D-4E92-BE9A-FF82769EAFCF}</Project>
-      <Name>SimpleCalculator</Name>
+      <Name>CalculatorAssignment</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />

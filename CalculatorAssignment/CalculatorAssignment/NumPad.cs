@@ -14,17 +14,15 @@ namespace CalculatorAssignment
     {
         // The Buffer will hold all the characters in sequence
         private List<char> Buffer;
-
+        
         /// <summary>
         /// Gets the Current Value
         /// </summary>
         /// <returns></returns>
         public double GetValue()
         {
-            double result = 0;
-            string s = PrintValue();
-            if (s != "")
-                result = Convert.ToDouble(s);
+            double result;
+            result = Convert.ToDouble(Buffer.ToArray().ToString());
             return result;
         }
         /// <summary>
@@ -44,15 +42,15 @@ namespace CalculatorAssignment
         public string PrintValue()
         {
             string result = "";
-            while (Buffer.Count() > 1 & Buffer.Count() < 3 && Buffer[0] == '0')
+            while (Buffer.Count()>1 & Buffer.Count()<3 && Buffer[0] == '0')
             {
                 Buffer.RemoveAt(0);
             }
-            if (Buffer.Count() > 0 && Buffer[0] == ',')
+            if (Buffer.Count()>0 && Buffer[0] == ',')
             {
                 Buffer.Insert(0, '0');
             }
-            char[] resultArray = Buffer.ToArray();
+            char[] resultArray =  Buffer.ToArray();
             StringBuilder resultbuilder = new StringBuilder();
             for (int i = 0; i < resultArray.Length; i++)
             {
@@ -78,7 +76,7 @@ namespace CalculatorAssignment
         private void Button_Click(object sender, EventArgs e)
         {
             Button target = sender as Button;
-            switch (target.Text[0])
+            switch (target.Text[0]) 
             {
                 case 'C':
                     ClearValue(target);
@@ -87,7 +85,7 @@ namespace CalculatorAssignment
                     ToggleComma(target);
                     break;
                 default:
-                    AddNumber(target);
+                    AddNumber(target); 
                     break;
             }
         }
@@ -110,12 +108,12 @@ namespace CalculatorAssignment
                 Buffer.Remove(',');
             }
             else
-            {
+            { 
                 Buffer.Add(',');
             }
             if (Buffer.Count > 1)
             {
-                ValueChanged(this, new EventArgs());
+            ValueChanged(this, new EventArgs());
             }
         }
 
