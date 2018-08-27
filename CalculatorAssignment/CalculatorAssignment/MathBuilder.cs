@@ -8,14 +8,14 @@ namespace CalculatorAssignment
 {
     class MathBuilder
     {
-        List<MathNode> MathNodes { get; set; }
+        List<MathElement> MathNodes { get; set; }
         public MathBuilder()
         {
-            MathNodes = new List<MathNode>();
+            MathNodes = new List<MathElement>();
         }
-        public void AddNode(MathNode newNode)
+        public void AddNode(MathElement newNode)
         {
-            MathNode PreviousNode = MathNodes[MathNodes.Count - 1];
+            MathElement PreviousNode = MathNodes[MathNodes.Count - 1];
         }
     }
 }

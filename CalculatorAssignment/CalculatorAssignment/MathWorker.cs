@@ -5,31 +5,31 @@ namespace CalculatorAssignment
 {
     internal class MathWorker
     {
-        List<MathNode> Nodes;
+        List<MathElement> Nodes;
         public MathWorker()
         {
-            Nodes = new List<MathNode>();
+            Nodes = new List<MathElement>();
         }
-        public void addNode(MathNode nodeToAdd)
+        public void addNode(MathElement nodeToAdd)
         {
             var input = nodeToAdd.GetType();
-            var a = typeof(OperatorNode);
-            if (input == typeof(OperatorNode))
+            var a = typeof(OperatorElement);
+            if (input == typeof(OperatorElement))
             {
-                TryAddOperator(nodeToAdd as OperatorNode);
+                TryAddOperator(nodeToAdd as OperatorElement);
             }
-            if(input == typeof(ValueNode))
+            if(input == typeof(ValueElement))
             {
-                TryAddValue(nodeToAdd as ValueNode);
+                TryAddValue(nodeToAdd as ValueElement);
             }
         }
 
-        private void TryAddValue(ValueNode valueNode)
+        private void TryAddValue(ValueElement valueNode)
         {
             throw new NotImplementedException();
         }
 
-        private void TryAddOperator(OperatorNode operatorNode)
+        private void TryAddOperator(OperatorElement operatorNode)
         {
             throw new NotImplementedException();
         }

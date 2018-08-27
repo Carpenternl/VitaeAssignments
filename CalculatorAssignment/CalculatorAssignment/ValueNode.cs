@@ -2,54 +2,54 @@
 
 namespace CalculatorAssignment
 {
-    public class ValueNode : MathNode
+    public class ValueElement : MathElement
     {
         public double Value;
         public enum valuetype { none, Euro, Percentage }
         public valuetype Valuetype;
 
-        public ValueNode(double value)
+        public ValueElement(double value)
         {
             this.Value = value;
             Valuetype = 0;
         }
 
-        public override ValueNode Calculate()
+        public override ValueElement Calculate()
         {
             throw new System.NotImplementedException();
         }
 
-        public static ValueNode operator +(ValueNode a, ValueNode b)
+        public static ValueElement operator +(ValueElement a, ValueElement b)
         {
             // Add a to b
             // Get the Raw Value
             double rawValue = a.Value + b.Value;
-            ValueNode result = GetConvertedValue(a.Valuetype, b.Valuetype,rawValue);
+            ValueElement result = GetConvertedValue(a.Valuetype, b.Valuetype,rawValue);
             return result;
         }
-        public static ValueNode operator -(ValueNode left, ValueNode right)
+        public static ValueElement operator -(ValueElement left, ValueElement right)
         {
             double RawValue = left.Value - right.Value;
-            ValueNode result = GetConvertedValue(left.Valuetype, right.Valuetype,RawValue);
+            ValueElement result = GetConvertedValue(left.Valuetype, right.Valuetype,RawValue);
             return result;
         }
-        public static ValueNode operator *(ValueNode left, ValueNode right)
+        public static ValueElement operator *(ValueElement left, ValueElement right)
         {
             double RawValue = left.Value * right.Value;
-            ValueNode Result = GetConvertedValue(left.Valuetype, right.Valuetype, RawValue);
+            ValueElement Result = GetConvertedValue(left.Valuetype, right.Valuetype, RawValue);
             return Result;
         }
-        public static ValueNode operator /(ValueNode left, ValueNode right)
+        public static ValueElement operator /(ValueElement left, ValueElement right)
         {
             if (right.Value ==0)
             {
                 throw new DivideByZeroException();
             }
             double RawValue = left.Value / right.Value;
-            ValueNode Result = GetConvertedValue(left.Valuetype, right.Valuetype, RawValue);
+            ValueElement Result = GetConvertedValue(left.Valuetype, right.Valuetype, RawValue);
             return Result;
         }
-        private static ValueNode GetConvertedValue(valuetype a, valuetype b,double newvalue)
+        private static ValueElement GetConvertedValue(valuetype a, valuetype b,double newvalue)
         {
             double ResultValue = newvalue;
             valuetype ResultValueType = valuetype.none;
@@ -65,7 +65,7 @@ namespace CalculatorAssignment
             if (OnlyOneIsValutaValue(a, b)) {
                 ResultValueType = valuetype.Euro;
             }
-            ValueNode Result = new ValueNode(ResultValue) { Valuetype = ResultValueType };
+            ValueElement Result = new ValueElement(ResultValue) { Valuetype = ResultValueType };
             return Result;
         }
 
@@ -111,7 +111,7 @@ namespace CalculatorAssignment
 
             // TODO: write your implementation of Equals() here
             // My code
-            ValueNode objEval = obj as ValueNode;
+            ValueElement objEval = obj as ValueElement;
             if (Valuetype != objEval.Valuetype)
             {
                 return false;

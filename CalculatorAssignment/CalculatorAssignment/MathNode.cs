@@ -3,51 +3,51 @@
     /// <summary>
     /// Encapsulating class to use as I Enumerable
     /// </summary>
-    public abstract class MathNode
+    public abstract class MathElement
     {
-        public abstract ValueNode Calculate();
+        public abstract ValueElement Calculate();
     }
-    public abstract class OperatorNode : MathNode
+    public abstract class OperatorElement : MathElement
     {
-        protected OperatorNode(double Defaultval)
+        protected OperatorElement(double Defaultval)
         {
-            left = new ValueNode(Defaultval);
-            right = new ValueNode(Defaultval);
+            left = new ValueElement(Defaultval);
+            right = new ValueElement(Defaultval);
         }
-        protected MathNode left;
-        protected MathNode right;
+        protected MathElement left;
+        protected MathElement right;
     }
-    public class AddOperator : OperatorNode
+    public class AddOperator : OperatorElement
     {
         protected AddOperator(double Defaultval) : base(Defaultval)
         {
             Defaultval = 0;
         }
 
-        public override ValueNode Calculate()
+        public override ValueElement Calculate()
         {
             return left.Calculate() + right.Calculate();
         }
     }
-    public class SubTractOperator : OperatorNode
+    public class SubTractOperator : OperatorElement
     {
         protected SubTractOperator(double Defaultval) : base(Defaultval)
         {
             Defaultval = 0;
         }
 
-        public override ValueNode Calculate()
+        public override ValueElement Calculate()
         {
             return left.Calculate() - right.Calculate();
         }
     }
-    class DivideOperator : OperatorNode
+    class DivideOperator : OperatorElement
     {
         public DivideOperator(double Defaultval) : base(Defaultval)
         {
             Defaultval = 0;
         }
-        public override ValueNode Calculate()
+        public override ValueElement Calculate()
         {
             try
             {
@@ -56,17 +56,17 @@
             catch (System.ArgumentException)
             {
                 System.Windows.Forms.MessageBox.Show("Cannot Divide By Zero");
-                return new ValueNode(0);
+                return new ValueElement(0);
             }
         }
     }
-    class MultiplyOperator : OperatorNode
+    class MultiplyOperator : OperatorElement
     {
         public MultiplyOperator(double defaultValue) : base(defaultValue)
         {
             defaultValue = 0;
         }
-        public override ValueNode Calculate()
+        public override ValueElement Calculate()
         {
             return left.Calculate() * right.Calculate();
         }
