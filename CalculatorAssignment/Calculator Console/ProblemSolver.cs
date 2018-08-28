@@ -24,7 +24,11 @@ namespace Calculator_Console
                 return tryToAddNewMathItem(newMathItem);
             }
         }
-
+        /// <summary>
+        /// Tries to add A new MathItem to the exsisting problem
+        /// </summary>
+        /// <param name="newMathItem"></param>
+        /// <returns></returns>
         private bool tryToAddNewMathItem(MathItem newMathItem)
         {
             if(newMathItem is MathValue)
