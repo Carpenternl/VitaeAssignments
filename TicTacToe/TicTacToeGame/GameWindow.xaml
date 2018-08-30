@@ -32,6 +32,9 @@
                     <Label Content="{Binding Value,ElementName=ScoreToWin}"/>
                 </StackPanel>
                 <Button Content="Add Player" Click="AddPlayerClick"/>
+                <StackPanel x:Name="PlayerList">
+                    
+                </StackPanel>
             </StackPanel>
         </Grid>
     </Grid>
