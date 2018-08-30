@@ -1,0 +1,38 @@
+﻿<Page x:Class="TicTacToeGame.GameWindow"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:TicTacToeGame"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="GameWindow">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="581*"/>
+            <ColumnDefinition Width="219*"/>
+        </Grid.ColumnDefinitions>
+        <Grid x:Name="GameGrid" Grid.Column="0" ShowGridLines="True"/>
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="9*"/>
+            </Grid.RowDefinitions>
+            <Button x:Name="GameToggle" Content="Start game" Click="StartButtonClick" Grid.Row="0" Margin="0,0,0.2,2.6"/>
+            <StackPanel x:Name="Settings" Grid.Row="1">
+                <Slider Minimum="3" Maximum="20" x:Name="FieldSize" IsSnapToTickEnabled="True" TickPlacement="TopLeft" SmallChange="1" TickFrequency="1"/>
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="Size: "/>
+                    <Label x:Name="SizeDisplay" Content="{Binding Value, ElementName=FieldSize}"/>
+                </StackPanel>
+                <Slider x:Name="ScoreToWin" Minimum="{Binding Minimum,ElementName=FieldSize}" Maximum="{Binding Maximum,ElementName=FieldSize}" SmallChange="1" TickPlacement="TopLeft" IsSnapToTickEnabled="True"/>
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="Score to Win:"/>
+                    <Label Content="{Binding Value,ElementName=ScoreToWin}"/>
+                </StackPanel>
+                <Button Content="Add Player" Click="AddPlayerClick"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Page>
