@@ -112,21 +112,21 @@ namespace TicTacToeGame
 
         private void AddPlayerClick(object sender, RoutedEventArgs e)
         {
-            Player newbie = new Player(PlayerList.Children.Count);
-            if (Players == null)
-            {
-                Players = new Player[1];
-                Players[0] = newbie;
-            }
-            else
-            {
-                List<Player> VariablePlayers = Players.ToList<Player>();
-                VariablePlayers.Add(newbie);
-                Players = VariablePlayers.ToArray();
-            }
-            PlayerItem NewbieItem = new PlayerItem();
-            NewbieItem.PlayerName = newbie.Name;
-            PlayerList.Children.Add(NewbieItem);
+            //Player newbie = new Player(PlayerList.Children.Count);
+            //if (Players == null)
+            //{
+            //    Players = new Player[1];
+            //    Players[0] = newbie;
+            //}
+            //else
+            //{
+            //    List<Player> VariablePlayers = Players.ToList<Player>();
+            //    VariablePlayers.Add(newbie);
+            //    Players = VariablePlayers.ToArray();
+            //}
+            //PlayerItem NewbieItem = new PlayerItem();
+            //NewbieItem.PlayerName = newbie.PlayerName;
+            //PlayerList.Children.Add(NewbieItem);
         }
     }
 }
