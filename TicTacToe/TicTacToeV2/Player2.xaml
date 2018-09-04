@@ -1,0 +1,17 @@
+﻿<UserControl x:Class="TicTacToeV2.Player2"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:TicTacToeV2"
+             mc:Ignorable="d" 
+             d:DesignHeight="24" d:DesignWidth="200">
+    <StackPanel Orientation="Horizontal">
+        <StackPanel.Background>
+            <SolidColorBrush Color="{Binding PlayerColor, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:Player2}}}" />
+        </StackPanel.Background>
+        <Button Content=" X " Click="Deleteclick"  Background="Red"/>
+        <Button Content="edit" Margin="0,0,10,0"></Button>
+        <Label x:Name="NameLabel" Content="{Binding PlayerName, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:Player2}}}"/>
+    </StackPanel>
+</UserControl>
