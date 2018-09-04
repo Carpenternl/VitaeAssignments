@@ -13,8 +13,9 @@
             <ColumnDefinition Width="167*"/>
             <ColumnDefinition Width="33*"/>
         </Grid.ColumnDefinitions>
+        <local:GameField  x:Name="Field" Grid.Column="0"/>
         <StackPanel Grid.Column="1">
-            <Button Content="Start Game" Click="ToggleGame_Click"/>
+            <Button Content="Start Game" Click="TogglePlayerStart"/>
             <Slider  x:Name="FieldSizeSlider" Minimum="3" Maximum="20" TickFrequency="1" IsSnapToTickEnabled="true" Value="3" TickPlacement="TopLeft" />
             <StackPanel Orientation="Horizontal">
                 <Label Content="Fieldsize" HorizontalAlignment="Left" VerticalAlignment="Top"/>

@@ -21,14 +21,40 @@ namespace TicTacToeV2
     /// </summary>
     public partial class GameWindow : Page
     {
+
+
         public GameWindow()
         {
             InitializeComponent();
         }
 
-        private void ToggleGame_Click(object sender, RoutedEventArgs e)
+        private void TogglePlayerStart(object sender, RoutedEventArgs e)
         {
+            Button Target = sender as Button;
+            // get your players
+            Player2[] Players = PlayerList.Children.Cast<Player2>().ToArray();
+            // Can't play without players
+            if (Players.Length > 0)
+            {
+                // get your field Size
+                int Fieldsize = (int)FieldSizeSlider.Value;
+                // Get your score Threshold
+                int WinThreshold = (int)WinThresholdSlider.Value;
+                Field.StartGame(Players, Fieldsize, WinThreshold);
+                Target.Click += TogglePlayerEnd;
+                Target.Click -= TogglePlayerStart;
+                Target.Content = "Stop Game";
+            }
 
+        }
+
+        private void TogglePlayerEnd(object sender, RoutedEventArgs e)
+        {
+            Button Caller = sender as Button;
+            Field.EndGame();
+            Caller.Click += TogglePlayerStart;
+            Caller.Click -= TogglePlayerEnd;
+            Caller.Content = "Start Game";
         }
 
         private void AddPlayer_Click(object sender, RoutedEventArgs e)
@@ -37,17 +63,17 @@ namespace TicTacToeV2
             IEnumerable<int> IDs = from plyr in PlayerList.Children.Cast<Player2>() select plyr.ID;
             int[] idArray = IDs.ToArray();
             int newID;
-            if (idArray.Length<=0)
+            if (idArray.Length <= 0)
             {
-                PlayerList.Children.Add(new Player2(rand.Next(10,99)));
+                PlayerList.Children.Add(new Player2(rand.Next(10, 99)));
             }
             else
             {
                 do
                 {
-                    newID = rand.Next(10,99);
+                    newID = rand.Next(10, 99);
                 } while (idArray.Contains(newID));
-                PlayerList.Children.Add(new Player2(newID));
+                PlayerList.Children.Add(new Player2(newID) { PlayerColor = GetRandomColor() });
             }
             InvalidateVisual();
         }
