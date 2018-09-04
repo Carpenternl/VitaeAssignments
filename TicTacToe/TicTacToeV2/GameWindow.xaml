@@ -15,8 +15,9 @@
         </Grid.ColumnDefinitions>
         <local:GameField  x:Name="Field" Grid.Column="0"/>
         <StackPanel Grid.Column="1">
-            <Button Content="Start Game" Click="TogglePlayerStart"/>
-            <Slider  x:Name="FieldSizeSlider" Minimum="3" Maximum="20" TickFrequency="1" IsSnapToTickEnabled="true" Value="3" TickPlacement="TopLeft" />
+            <Button x:Name="StartStop" Content="Start Game" Click="TogglePlayerStart"/>
+            <StackPanel x:Name="Settings">
+                <Slider  x:Name="FieldSizeSlider" Minimum="3" Maximum="20" TickFrequency="1" IsSnapToTickEnabled="true" Value="3" TickPlacement="TopLeft" />
             <StackPanel Orientation="Horizontal">
                 <Label Content="Fieldsize" HorizontalAlignment="Left" VerticalAlignment="Top"/>
                 <Label Content="{Binding Value, ElementName=FieldSizeSlider}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
@@ -28,6 +29,7 @@
             </StackPanel>
             <Button Content="Add Player" Click="AddPlayer_Click"/>
             <StackPanel VerticalAlignment="Stretch" x:Name="PlayerList" ScrollViewer.CanContentScroll="True"></StackPanel>
+            </StackPanel>
         </StackPanel>
 
     </Grid>

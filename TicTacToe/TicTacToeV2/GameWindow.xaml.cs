@@ -26,6 +26,25 @@ namespace TicTacToeV2
         public GameWindow()
         {
             InitializeComponent();
+            Field.GameUpdated += Field_GameUpdated;
+            Field.GameEnded += Field_GameEnded;
+        }
+
+        private void Field_GameEnded(object sender, EventArgs e)
+        {
+            TogglePlayerEnd(sender, new RoutedEventArgs());
+        }
+
+        private void Field_GameUpdated(object sender, EventArgs e)
+        {
+            GameField Sender = sender as GameField;
+            Player2[] Targets = PlayerList.Children.Cast<Player2>().ToArray();
+            Player2 target = Targets[Sender.ActivePlayerIndex];
+            Player2 previousTarget = Targets[(Sender.ActivePlayerIndex - 1 + Targets.Length) % Targets.Length];
+            previousTarget.BorderThickness = new Thickness(0);
+            target.BorderThickness = new Thickness(3);
+            target.BorderBrush = new SolidColorBrush(Colors.Red);
+         //   throw new NotImplementedException();
         }
 
         private void TogglePlayerStart(object sender, RoutedEventArgs e)
@@ -34,27 +53,28 @@ namespace TicTacToeV2
             // get your players
             Player2[] Players = PlayerList.Children.Cast<Player2>().ToArray();
             // Can't play without players
-            if (Players.Length > 0)
+            if (Players.Length > 1)
             {
                 // get your field Size
                 int Fieldsize = (int)FieldSizeSlider.Value;
                 // Get your score Threshold
                 int WinThreshold = (int)WinThresholdSlider.Value;
-                Field.StartGame(Players, Fieldsize, WinThreshold);
-                Target.Click += TogglePlayerEnd;
-                Target.Click -= TogglePlayerStart;
-                Target.Content = "Stop Game";
+                Field.SetUpGame(Players, Fieldsize, WinThreshold);
+                StartStop.Click += TogglePlayerEnd;
+                StartStop.Click -= TogglePlayerStart;
+                StartStop.Content = "Stop Game";
+                Settings.IsEnabled = false;
             }
 
         }
-
         private void TogglePlayerEnd(object sender, RoutedEventArgs e)
         {
             Button Caller = sender as Button;
             Field.EndGame();
-            Caller.Click += TogglePlayerStart;
-            Caller.Click -= TogglePlayerEnd;
-            Caller.Content = "Start Game";
+            StartStop.Click += TogglePlayerStart;
+            StartStop.Click -= TogglePlayerEnd;
+            StartStop.Content = "Start Game";
+            Settings.IsEnabled = true;
         }
 
         private void AddPlayer_Click(object sender, RoutedEventArgs e)

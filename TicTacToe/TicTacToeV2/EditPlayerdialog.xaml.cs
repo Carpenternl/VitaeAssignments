@@ -19,9 +19,27 @@ namespace TicTacToeV2
     /// </summary>
     public partial class EditPlayerdialog : Window
     {
+
+
+        public String NewPlayerName
+        {
+            get { return (String)GetValue(NewPlayerNameProperty); }
+            set { SetValue(NewPlayerNameProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for NewPlayerName.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty NewPlayerNameProperty =
+            DependencyProperty.Register("NewPlayerName", typeof(String), typeof(EditPlayerdialog), new PropertyMetadata("alpha"));
+
+
         public EditPlayerdialog()
         {
             InitializeComponent();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            this.DialogResult = true;
         }
     }
 }

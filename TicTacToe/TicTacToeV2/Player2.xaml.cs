@@ -52,12 +52,23 @@ namespace TicTacToeV2
         {
             ID = id;
             InitializeComponent();
-            this.NameLabel.Content = ID;
+            this.NameLabel.Content = PlayerName;
         }
 
         private void Deleteclick(object sender, RoutedEventArgs e)
         {
             ((StackPanel)this.Parent).Children.Remove(this);
+        }
+
+        private void EditPlayerClick(object sender, RoutedEventArgs e)
+        {
+            EditPlayerdialog dialog = new EditPlayerdialog();
+            dialog.ShowDialog();
+            if (dialog.DialogResult==true)
+            {
+                NameLabel.Content = dialog.NewPlayerName;
+                PlayerName = dialog.NewPlayerName;
+            }
         }
     }
 }

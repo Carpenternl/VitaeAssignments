@@ -11,7 +11,7 @@
             <SolidColorBrush Color="{Binding PlayerColor, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:Player2}}}" />
         </StackPanel.Background>
         <Button Content=" X " Click="Deleteclick"  Background="Red"/>
-        <Button Content="edit" Margin="0,0,10,0"></Button>
+        <Button Content="edit" Margin="0,0,10,0" Click="EditPlayerClick"></Button>
         <Label x:Name="NameLabel" Content="{Binding PlayerName, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:Player2}}}"/>
     </StackPanel>
 </UserControl>
