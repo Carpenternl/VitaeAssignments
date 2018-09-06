@@ -1,0 +1,34 @@
+﻿<Page
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:BattleShipGame"
+      xmlns:System="clr-namespace:System;assembly=mscorlib" x:Class="BattleShipGame.BattleShipStartup"
+      mc:Ignorable="d" 
+      d:DesignHeight="640" d:DesignWidth="600"
+      Title="BattleShipStartup">
+
+    <Page.Resources>
+        <System:Double x:Key="BigFont">20</System:Double>
+    </Page.Resources>
+
+
+    <Grid Grid.Row="1" Grid.Column="1" Margin="10px" Width="480px">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Label Content="Player1" Grid.Row="0" FontSize="{DynamicResource BigFont}"/>
+        <TextBox  x:Name="PlayerName1" Grid.Row="1" FontSize="{DynamicResource BigFont}" TextChanged="NameInputChanged"/>
+        <Label Content="Player 2" Grid.Row="2" FontSize="{DynamicResource BigFont}" />
+        <TextBox x:Name="PlayerName2" Grid.Row="3" FontSize="{DynamicResource BigFont}" TextChanged="NameInputChanged"/>
+        <Button IsEnabled="False" x:Name="StartButton" Content="Begin Battle!" Grid.Row="4" Margin="20" Padding="5" FontSize="{DynamicResource BigFont}" Click="StartButton_Click"/>
+    </Grid>
+
+
+
+</Page>

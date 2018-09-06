@@ -16,23 +16,19 @@ using System.Windows.Shapes;
 namespace BattleShipGame
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for SetupWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class SetupWindow : Page
     {
-        public MainWindow()
+        public SetupWindow()
         {
             InitializeComponent();
-            StartWindow.StartGame += StartWindow_StartGame;
+            GameField.MapClick += GameField_MapClick;
         }
 
-        private void StartWindow_StartGame(string[] Players)
+        private void GameField_MapClick(Point Cellindex)
         {
-            this.Content = new SetupWindow();
-            foreach (var Player in Players)
-            {
-
-            }
+            //throw new NotImplementedException();
         }
     }
 }
