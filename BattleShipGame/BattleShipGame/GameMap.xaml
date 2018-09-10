@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:BattleShipGame"
              mc:Ignorable="d" 
-             d:DesignHeight="1100" d:DesignWidth="1100" Height="{Binding ActualWidth, Mode=OneWay, RelativeSource={RelativeSource Self}}" >
+             d:DesignHeight="550" d:DesignWidth="550" Height="{Binding ActualWidth, Mode=OneWay, RelativeSource={RelativeSource Self}}" >
     <Grid Height="{Binding ActualWidth, Mode=OneWay, RelativeSource={RelativeSource Self}}" MouseLeftButtonUp="Grid_MouseLeftButtonUp" ShowGridLines="True" Background="#00000000">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
