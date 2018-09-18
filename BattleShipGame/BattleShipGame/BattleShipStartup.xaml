@@ -26,7 +26,7 @@
         <TextBox  x:Name="PlayerName1" Grid.Row="1" FontSize="{DynamicResource BigFont}" TextChanged="NameInputChanged"/>
         <Label Content="Player 2" Grid.Row="2" FontSize="{DynamicResource BigFont}" />
         <TextBox x:Name="PlayerName2" Grid.Row="3" FontSize="{DynamicResource BigFont}" TextChanged="NameInputChanged"/>
-        <Button IsEnabled="False" x:Name="StartButton" Content="Begin Battle!" Grid.Row="4" Margin="20" Padding="5" FontSize="{DynamicResource BigFont}" Click="StartButton_Click"/>
+        <Button IsDefault="True" IsEnabled="False" x:Name="StartButton" Content="Begin Battle!" Grid.Row="4" Margin="20" Padding="5" FontSize="{DynamicResource BigFont}" Click="StartButton_Click"/>
     </Grid>
 
 

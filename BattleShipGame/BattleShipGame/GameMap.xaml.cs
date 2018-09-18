@@ -20,45 +20,96 @@ namespace BattleShipGame
     /// </summary>
     public partial class GameMap : UserControl
     {
+        private string horizontalLabels = "0abcdefghij";
+        public readonly int size = 11;
+        public delegate void MapClickHandler(Point gridIndex);
+        public event MapClickHandler Mapclick;
+        public delegate void MapHoverHandler(Point GridIndex);
+        public event MapHoverHandler MapHover;
 
-        public delegate void MapClickHandler(Point Cellindex);
-        public event MapClickHandler MapClick;
+
         public GameMap()
         {
-            MapClick += GameMap_MapClick;
             InitializeComponent();
+            BuildGrid();
+            BindEvents();
         }
 
-        private void GameMap_MapClick(Point Cellindex)
+        private void BindEvents()
         {
-            // Do Nothing
+            Mapclick += GameMap_Mapclick;
+            MapHover += GameMap_MapHover;
         }
 
-        public bool ValidCell(Point arg)
+        private void GameMap_MapHover(Point GridIndex)
         {
-            Point GridPoint = GetGridPosition(arg);
-            if(GridPoint.X>=1 & GridPoint.Y>=1 & GridPoint.X<12 & GridPoint.Y < 12)
+            //Do Nothing
+        }
+
+        private void GameMap_Mapclick(Point gridIndex)
+        {
+            //Do Nothing
+        }
+
+        private void BuildGrid()
+        {
+            for (int i = 0; i < size; i++)
             {
-                return true;
+                Body.ColumnDefinitions.Add(new ColumnDefinition());
+                Body.RowDefinitions.Add(new RowDefinition());
             }
-            return false;
-        }
-        public Point GetGridPosition(Point absolutePosition)
-        {
-            Point ClickPostion = absolutePosition;
-            double Mapwidth = this.ActualWidth;
-            double MapHeight = this.ActualHeight;
-            double Column = ClickPostion.X * 11 / Mapwidth;
-            double Row = ClickPostion.Y * 11 / Mapwidth;
-            return new Point(Column, Row);  
+            for (int x = 1; x < size; x++)
+            {
+                Label TopLabel = new Label();
+                Label LeftLabel = new Label();
+                LeftLabel.Content = x.ToString();
+                TopLabel.Content = horizontalLabels[x];
+                buildLabel(TopLabel, x, 0);
+                buildLabel(LeftLabel, 0, x);
+
+            }
         }
 
+        private void buildLabel(Label target, int x, int y)
+        {
+            target.VerticalAlignment = VerticalAlignment.Center;
+            target.HorizontalAlignment = HorizontalAlignment.Center;
+            setGridPos(target, x, y);
+            Body.Children.Add(target);
+        }
+        public static void setGridPos(UIElement element, int x, int y)
+        {
+            Grid.SetColumn(element, x);
+            Grid.SetRow(element, y);
+        }
+
+        public static Point ToGrid(Point RawPos, Size RawSize, Size GridSize)
+        {
+            double RawX = RawPos.X;
+            double RawY = RawPos.Y;
+            double GridX = RawX * GridSize.Width / RawSize.Width;
+            double GridY = RawY * GridSize.Height / RawSize.Height;
+            return new Point((int)GridX, (int)GridY);
+        }
+        #region events
         private void Grid_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            if (ValidCell(e.GetPosition(this)))
+            Point MouseRaw = e.GetPosition(Body);
+            Point MouseGrid = ToGrid(MouseRaw, Body.RenderSize, new Size(size, size));
+            Mapclick(MouseGrid);
+        }
+
+        private Point Previous = new Point(-1, -1);
+        private void Body_MouseMove(object sender, MouseEventArgs e)
+        {
+            Point MouseRaw = e.GetPosition(Body);
+            Point MouseGrid = ToGrid(MouseRaw, Body.RenderSize, new Size(size, size));
+            if (MouseGrid != Previous)
             {
-                MapClick(GetGridPosition(e.GetPosition(this)));
+                Previous = MouseGrid;
+                MapHover(MouseGrid);
             }
         }
+        #endregion
     }
 }

@@ -20,12 +20,12 @@
                 <RowDefinition Height="Auto"/>
                 
             </Grid.RowDefinitions>
-            <Label Grid.Row="0" Content="PlayerName"/>
+            <Label x:Name="PlayerNameDisplay" Grid.Row="0" Content="PlayerName"/>
             <StackPanel x:Name="ShipPanel" Grid.Row="1">
 
             </StackPanel>
             <Button Content="Ships left: " Grid.Row="2"/>
         </Grid>
-        <local:GameMap x:Name="GameField" Grid.Column="1"/>
+        <local:GameMap x:Name="GameField" Grid.Column="1" />
     </Grid>
 </Page>
