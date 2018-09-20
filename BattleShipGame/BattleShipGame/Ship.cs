@@ -16,6 +16,12 @@ namespace BattleShipGame
             get { return shipSize; }
             set { shipSize = value; }
         }
+
+        public delegate void LeftDownHandler(object sender, Point location);
+        public event LeftDownHandler leftdown;
+        public delegate void leftUpHandler(object sender, Point location);
+        public event leftUpHandler LeftUp;
+
         private Point shipPosition;
 
         public Point ShipPosition
@@ -57,15 +63,22 @@ namespace BattleShipGame
             for (int i = 0; i < Cells.Length; i++)
             {
                 Cells[i] = new MapCell();
-                Cells[i].MouseLeftButtonUp += Ship_MouseLeftButtonUp;
+                Cells[i].MouseLeftButtonDown += Ship_MouseLeftButtonDown;
             }
         }
 
-        private void Ship_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void Ship_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            MapCell f = sender as MapCell;
-            f.Content = "test";
-          //  Console.Write("CLicked");
+            MapCell target = sender as MapCell;
+            
+            target.MouseLeftButtonUp += Target_MouseLeftButtonUp;
+        }
+
+        private void Target_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            MapCell target = sender as MapCell;
+            target.MouseLeftButtonUp -= Target_MouseLeftButtonUp;
+            throw new NotImplementedException();
         }
 
         //TODO: Rotate

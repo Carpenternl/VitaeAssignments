@@ -22,7 +22,7 @@
             </Grid.RowDefinitions>
             <Label x:Name="PlayerNameDisplay" Grid.Row="0" Content="PlayerName"/>
             <StackPanel x:Name="ShipPanel" Grid.Row="1">
-
+                <Button Content="ShipName + Amount"/>
             </StackPanel>
             <Button Content="Ships left: " Grid.Row="2"/>
         </Grid>

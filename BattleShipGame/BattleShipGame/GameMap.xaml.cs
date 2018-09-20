@@ -27,12 +27,27 @@ namespace BattleShipGame
         public delegate void MapHoverHandler(Point GridIndex);
         public event MapHoverHandler MapHover;
 
-
+        public List<MapCell> CellData;
         public GameMap()
         {
             InitializeComponent();
             BuildGrid();
+            CellData = new List<MapCell>(size);
             BindEvents();
+        }
+
+        public bool SpaceAvailable(int x,int y)
+        {
+           IEnumerable<MapCell> result = CellData.Where<MapCell>(Target => Target.MapPosition.X == x & Target.MapPosition.Y == y);
+            if (result.Count() > 0)
+            {
+                return false;
+            }
+            return true;
+        }
+        public void AddCell(MapCell ToAdd)
+        {
+            CellData.Find(f => f.MapPosition == ToAdd.MapPosition);
         }
 
         private void BindEvents()
