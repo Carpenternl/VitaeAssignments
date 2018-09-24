@@ -55,13 +55,18 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="CellData.cs" />
+    <Compile Include="GameField.xaml.cs">
+      <DependentUpon>GameField.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MapCell.xaml.cs">
       <DependentUpon>MapCell.xaml</DependentUpon>
     </Compile>
     <Compile Include="SetupWindow.xaml.cs">
       <DependentUpon>SetupWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Ship.cs" />
+    <Compile Include="Ship.xaml.cs">
+      <DependentUpon>Ship.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ShipData.cs" />
     <Compile Include="Ships\TestUser.xaml.cs">
       <DependentUpon>TestUser.xaml</DependentUpon>
@@ -71,6 +76,10 @@
       <DependentUpon>VisualCell.xaml</DependentUpon>
     </Compile>
     <Page Include="BattleShipStartup.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="GameField.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -101,6 +110,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="SetupWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Ship.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

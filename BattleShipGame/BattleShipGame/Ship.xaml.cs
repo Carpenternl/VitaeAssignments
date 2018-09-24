@@ -16,23 +16,13 @@ using System.Windows.Shapes;
 namespace BattleShipGame
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for Ship.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class Ship : UserControl
     {
-        public MainWindow()
+        public Ship()
         {
             InitializeComponent();
-            //StartWindow.StartGame += StartWindow_StartGame;
-        }
-
-        private void StartWindow_StartGame(string[] Players)
-        {
-            this.Content = new SetupWindow();
-            foreach (var Player in Players)
-            {
-
-            }
         }
     }
 }

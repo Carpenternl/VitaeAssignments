@@ -7,5 +7,5 @@
         mc:Ignorable="d"
         SizeToContent="WidthAndHeight"
         Title="MainWindow" Height="450" Width="800">
-    <local:BattleShipStartup x:Name="StartWindow"/>
+    <local:SetupWindow/>
 </Window>

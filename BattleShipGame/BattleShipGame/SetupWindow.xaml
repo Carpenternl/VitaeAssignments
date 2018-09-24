@@ -7,25 +7,27 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="620"
       Title="SetupWindow">
+    <Grid>
+        <Canvas x:Name="DragOverlay" MouseLeftButtonUp="EndDrag" Background="Transparent" IsHitTestVisible="False" Panel.ZIndex="2"></Canvas>
+        <Grid x:Name="ContentLayout" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="29*"/>
+                <ColumnDefinition Width="{Binding ActualHeight, ElementName=ContentLayout, Mode=OneWay}"/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition/>
+                    <RowDefinition Height="Auto"/>
 
-    <Grid x:Name="grid">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="29*"/>
-            <ColumnDefinition Width="{Binding ActualHeight, ElementName=grid, Mode=OneWay}"/>
-        </Grid.ColumnDefinitions>
-        <Grid Grid.Column="0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition/>
-                <RowDefinition Height="Auto"/>
-                
-            </Grid.RowDefinitions>
-            <Label x:Name="PlayerNameDisplay" Grid.Row="0" Content="PlayerName"/>
-            <StackPanel x:Name="ShipPanel" Grid.Row="1">
-                <Button Content="ShipName + Amount"/>
-            </StackPanel>
-            <Button Content="Ships left: " Grid.Row="2"/>
+                </Grid.RowDefinitions>
+                <Label x:Name="PlayerNameDisplay" Grid.Row="0" Content="PlayerName"/>
+                <StackPanel x:Name="ShipPanel" Grid.Row="1">
+                    <Label x:Name="buttn" Content="Scout" MouseLeftButtonDown="ScoutLabelClick"  />
+                </StackPanel>
+                <Button Content="Ships left: " Grid.Row="2"/>
+            </Grid>
+            <local:GameField x:Name="GameField" Grid.Column="1" />
         </Grid>
-        <local:GameMap x:Name="GameField" Grid.Column="1" />
     </Grid>
 </Page>
