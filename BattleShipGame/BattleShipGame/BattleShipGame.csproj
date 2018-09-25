@@ -54,6 +54,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AddShipButtonControl.xaml.cs">
+      <DependentUpon>AddShipButtonControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CellData.cs" />
     <Compile Include="GameField.xaml.cs">
       <DependentUpon>GameField.xaml</DependentUpon>
@@ -67,23 +70,18 @@
     <Compile Include="Ship.xaml.cs">
       <DependentUpon>Ship.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ShipData.cs" />
-    <Compile Include="Ships\TestUser.xaml.cs">
-      <DependentUpon>TestUser.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ShipYard.cs" />
     <Compile Include="VisualCell.xaml.cs">
       <DependentUpon>VisualCell.xaml</DependentUpon>
     </Compile>
+    <Page Include="AddShipButtonControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="BattleShipStartup.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="GameField.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="GameMap.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -98,9 +96,6 @@
     <Compile Include="BattleShipStartup.xaml.cs">
       <DependentUpon>BattleShipStartup.xaml</DependentUpon>
     </Compile>
-    <Compile Include="GameMap.xaml.cs">
-      <DependentUpon>GameMap.xaml</DependentUpon>
-    </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -114,10 +109,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Ship.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Ships\TestUser.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -152,11 +143,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <Resource Include="Ships\CarrierDestroyed.png" />
-    <Resource Include="Ships\CarrierSunk.png" />
-    <Resource Include="Ships\CarrierWhole.png" />
+    <Folder Include="Assets\Ships\Battleship\" />
+    <Folder Include="Assets\Ships\Carrier\" />
+    <Folder Include="Assets\Ships\Scout\" />
+    <Folder Include="Assets\Ships\Submarine\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

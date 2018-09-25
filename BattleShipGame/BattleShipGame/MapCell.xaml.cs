@@ -34,7 +34,7 @@ namespace BattleShipGame
             {
                 mapPosition.X = (int)value.X;
                 mapPosition.Y = (int)value.Y;
-                GameMap.setGridPos(this,(int) value.X,(int)value.Y);
+               // GameMap.setGridPos(this,(int) value.X,(int)value.Y);
             }
         }
         public MapCell()

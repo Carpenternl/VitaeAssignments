@@ -65,6 +65,7 @@ namespace BattleShipGame
 
         private void ScoutLabelClick(object sender, MouseButtonEventArgs e)
         {
+
             Label Sender = sender as Label;
             Point MouseOrigin = e.GetPosition(DragOverlay);
             // TODO create a ship
@@ -103,25 +104,76 @@ namespace BattleShipGame
             Canvas.SetTop(dragElement, y + offsetY);
         }
         #endregion
-
+        Point dragArm;
         private void Dragging(object sender, MouseEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed)
             {
                 Point target = e.GetPosition(DragOverlay);
-                setDragPosition(DragOverlay.Children[0], target, -10, -10);
+                setDragPosition(DragOverlay.Children[0], target, dragArm.X, dragArm.Y);
+                Point BoundPoint = e.GetPosition(GameField);
+                if (BoundPoint.X > 0 & BoundPoint.Y > 0)
+                {
+                    ((UIElement)DragOverlay.Children[0]).SetValue(BackgroundProperty, new SolidColorBrush(Colors.Red));
+                }
             }
             else
             {
-                DragOverlay.IsHitTestVisible = false;
-                ContentLayout.IsHitTestVisible = true;
-                DragOverlay.MouseMove -= Dragging;
-                
+                StopDragging();
             }
+        }
+
+        private void StopDragging()
+        {
+            DragOverlay.IsHitTestVisible = false;
+            ContentLayout.IsHitTestVisible = true;
+            DragOverlay.MouseMove -= Dragging;
+            DragOverlay.Children.Clear();
         }
 
         private void EndDrag(object sender, MouseButtonEventArgs e)
         {
         }
+
+        private void AddShipButtonControl_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            AddShipButtonControl Sender = sender as AddShipButtonControl;
+            Sender.ShipCount--;
+        }
+
+        private void CreateAndDragNewShip(object sender, MouseButtonEventArgs e)
+        {
+            AddShipButtonControl Sender = sender as AddShipButtonControl;
+            Shiptype TypeOfNewShip = Sender.NewShipType;
+            Ship NewShip = CreateNewShip(TypeOfNewShip,GameField.RenderSize);
+            InitializeDrag(NewShip, e.GetPosition(DragOverlay), new Point(0.5,0.5));
+
+        }
+
+        private void InitializeDrag(UIElement newShip, Point point1, Point point2)
+        {
+            
+            double arm = point2.X *(double) newShip.GetValue(WidthProperty);
+            double army = point2.Y * (double) newShip.GetValue(HeightProperty);
+            dragArm = new Point(-arm, -army);
+            setDragPosition(newShip, point1, dragArm.X,dragArm.Y);
+            DragOverlay.IsHitTestVisible = true;
+            ContentLayout.IsHitTestVisible = false;
+            DragOverlay.Children.Add(newShip);
+            DragOverlay.MouseMove += Dragging;
+        }
+
+        private Ship CreateNewShip(Shiptype typeOfNewShip, Size renderSize)
+        {
+            Ship result = new Ship(typeOfNewShip);
+            double renderedWidth = renderSize.Width / 11 * Grid.GetColumnSpan(result);
+            double renderedHeight = renderSize.Height / 11 * Grid.GetRowSpan(result);
+            result.Width = renderedWidth;
+            result.Height = renderedHeight;
+            return result;
+        }
+
+
     }
+    public enum Shiptype { Scout,Submarine,BattleShip,Aircraftcarrier};
 }
