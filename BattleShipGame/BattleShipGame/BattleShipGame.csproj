@@ -58,6 +58,9 @@
       <DependentUpon>AddShipButtonControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="CellData.cs" />
+    <Compile Include="DragCanvas.xaml.cs">
+      <DependentUpon>DragCanvas.xaml</DependentUpon>
+    </Compile>
     <Compile Include="GameField.xaml.cs">
       <DependentUpon>GameField.xaml</DependentUpon>
     </Compile>
@@ -80,6 +83,10 @@
     <Page Include="BattleShipStartup.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DragCanvas.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="GameField.xaml">
       <SubType>Designer</SubType>
