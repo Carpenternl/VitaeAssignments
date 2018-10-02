@@ -99,6 +99,7 @@ namespace BattleShipGame
             }
         }
 
+
         private void GridContent_MouseEnter(object sender, MouseEventArgs e)
         {
 
@@ -107,12 +108,19 @@ namespace BattleShipGame
         private void GridContent_MouseMove(object sender, MouseEventArgs e)
         {
             Point Raw = e.GetPosition(GridContent);
-            Point Snapped = new Point((int)(Raw.X * GridContent.ColumnDefinitions.Count / GridContent.ActualWidth),(int)(Raw.Y * GridContent.RowDefinitions.Count / GridContent.ActualHeight));
+            Point Snapped = Snap(Raw);
             debug.Content = Snapped.ToString();
             bool space = CheckPosition((int)Snapped.X, (int)Snapped.Y);
             debug.Content += $"\n {space.ToString()}";
             bool bigspace = CheckSpace(new Point((int)Snapped.X, (int)Snapped.Y), new Size(2, 2));
-            debug.Content += $"\n{bigspace.ToString()}"; 
+            debug.Content += $"\n{bigspace.ToString()}";
+        }
+
+        private Point Snap(Point rawposition)
+        {
+            double SnappedX = rawposition.X * GridContent.ColumnDefinitions.Count / GridContent.ActualWidth;
+            double SnappedY = rawposition.Y * GridContent.RowDefinitions.Count / GridContent.ActualHeight;
+            return new Point((int)SnappedX, (int)SnappedY);
         }
     }
 }
