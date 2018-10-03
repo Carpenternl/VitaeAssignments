@@ -20,8 +20,12 @@ namespace BattleShipGame
     /// </summary>
     public partial class GameField : UserControl
     {
+
+
+
+
         public readonly Size MapSize;
-        
+
         public GameField()
         {
             InitializeComponent();
@@ -40,7 +44,7 @@ namespace BattleShipGame
                 Point TopLeft = GetPosition(item);
                 Size ItemSize = GetItemSize(item);
                 Point BotRight = new Point(TopLeft.X + ItemSize.Width, TopLeft.Y + ItemSize.Height);
-                if (x>=TopLeft.X && x<BotRight.X && y>=TopLeft.Y && y<BotRight.Y)
+                if (x >= TopLeft.X && x < BotRight.X && y >= TopLeft.Y && y < BotRight.Y)
                 {
                     return false;
                 }
@@ -75,10 +79,10 @@ namespace BattleShipGame
         /// <param name="position"></param>
         /// <param name="area"></param>
         /// <returns></returns>
-        public bool CheckSpace(Point position,Size area)
+        public bool CheckSpace(Point position, Size area)
         {
             // The space must be within the box
-            if (position.X<0 | position.Y<0 | position.X+area.Width>MapSize.Width | position.Y+area.Height>MapSize.Height)
+            if (position.X < 0 | position.Y < 0 | position.X + area.Width > MapSize.Width | position.Y + area.Height > MapSize.Height)
             {
                 return false;
             }
@@ -89,7 +93,7 @@ namespace BattleShipGame
                     for (int x = 0; x < area.Width; x++)
                     {
                         bool f = CheckPosition((int)(position.X + x), (int)(position.Y + y));
-                        if (f==false)
+                        if (f == false)
                         {
                             return false;
                         }
@@ -114,6 +118,71 @@ namespace BattleShipGame
             debug.Content += $"\n {space.ToString()}";
             bool bigspace = CheckSpace(new Point((int)Snapped.X, (int)Snapped.Y), new Size(2, 2));
             debug.Content += $"\n{bigspace.ToString()}";
+            SetPreviewSize(new Point(Snapped.X-1,Snapped.Y-1), new Size(3, 3));
+        }
+
+        public void setPosition(UIElement child, Point p)
+        {
+            Grid.SetColumn(child, (int)p.X);
+            Grid.SetRow(child, (int)p.Y);
+        }
+        public void setSize(UIElement child, Size s)
+        {
+            Grid.SetColumnSpan(child, (int)s.Width);
+            Grid.SetRowSpan(child, (int)s.Height);
+        }
+
+        public void SetPreviewSize(Point p, Size s)
+        {
+            // Grid Top Left
+            Point GTL = new Point(0, 0);
+            // Grid Bottom Right
+            Point GBR = new Point(10, 10);
+            // PositionPreview Top Left
+            Point PPTL = new Point(p.X, p.Y);
+            // PositionPreview Bottom Right
+            Point PPBR = new Point(p.X + s.Width, p.Y + s.Height);
+
+
+            //Check wether either point is within the grid
+            bool insidebounds = CheckBounds(PPTL, GBR, GTL);
+            bool insidebounds2 = CheckBounds(PPBR, GBR, GTL);
+            //Set Point default 
+            //Point PR1 = new Point(GTL.X, GTL.Y);
+            //Point PR2 = new Point(GBR.X, GBR.Y);
+            Point PR1 = ClipPoint(PPTL, insidebounds, GTL);
+            Point PR2 = ClipPoint(PPBR, insidebounds2, GBR);
+            Size newS = GetElementSize(PR1, PR2);
+            setPosition(PositionPreview, PR1);
+            setSize(PositionPreview, newS);
+            PositionPreview.Stroke = new SolidColorBrush(Colors.Orange);
+            PositionPreview.StrokeThickness = 3;
+        }
+
+        private Size GetElementSize(Point pR1, Point pR2)
+        {
+            double absWidth = pR2.X - pR1.X;
+            double absHeight = pR2.Y - pR1.Y;
+            Size result = new Size(absWidth, absHeight);
+            return result;
+        }
+
+        private static Point ClipPoint(Point PPTL, bool insidebounds, Point PR1)
+        {
+            if (insidebounds)
+            {
+                PR1 = PPTL;
+            }
+            return PR1;
+        }
+
+        private bool CheckBounds(Point previewPoint, Point bottomRight, Point topLeft)
+        {
+            if (previewPoint.X >= topLeft.X & previewPoint.X < bottomRight.X & previewPoint.Y >= topLeft.Y & previewPoint.Y < bottomRight.Y)
+            {
+                return true;
+            }
+            return false;
         }
 
         private Point Snap(Point rawposition)
