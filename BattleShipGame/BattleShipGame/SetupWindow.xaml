@@ -8,7 +8,7 @@
       d:DesignHeight="450" d:DesignWidth="620"
       Title="SetupWindow">
     <Grid>
-        <Canvas x:Name="DragOverlay" MouseLeftButtonUp="EndDrag" Background="Transparent" IsHitTestVisible="False" Panel.ZIndex="1"></Canvas>
+        <local:DragCanvas x:Name="MyDragCanvas" Panel.ZIndex="1"></local:DragCanvas>
         <Grid x:Name="ContentLayout"  Panel.ZIndex="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="29*"/>
@@ -27,7 +27,7 @@
                     <local:AddShipButtonControl MouseLeftButtonUp="AddShipButtonControl_MouseLeftButtonUp" MouseLeftButtonDown="CreateAndDragNewShip" ShipCount="2" NewShipType="BattleShip" />
                     <local:AddShipButtonControl MouseLeftButtonUp="AddShipButtonControl_MouseLeftButtonUp" MouseLeftButtonDown="CreateAndDragNewShip" ShipCount="1" NewShipType="Aircraftcarrier" />
                     <local:AddShipButtonControl MouseLeftButtonUp="AddShipButtonControl_MouseLeftButtonUp" MouseLeftButtonDown="CreateAndDragNewShip" ShipCount="3" NewShipType="Submarine"/>
-                    <local:AddShipButtonControl MouseLeftButtonUp="AddShipButtonControl_MouseLeftButtonUp" MouseLeftButtonDown="CreateAndDragNewShip" ShipCount="4" NewShipType="Scout"/>
+                    <local:AddShipButtonControl MouseLeftButtonUp="AddShipButtonControl_MouseLeftButtonUp" MouseLeftButtonDown="AddShipButtonControl_MouseLeftButtonDown"  ShipCount="4" NewShipType="Scout"/>
                 </StackPanel>
                 <Button Content="Ships left: " Grid.Row="2"/>
             </Grid>

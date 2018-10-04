@@ -135,26 +135,14 @@ namespace BattleShipGame
         public void SetPreviewSize(Point p, Size s)
         {
             // Grid Top Left
-            Point GTL = new Point(0, 0);
-            // Grid Bottom Right
-            Point GBR = new Point(10, 10);
-            // PositionPreview Top Left
-            Point PPTL = new Point(p.X, p.Y);
-            // PositionPreview Bottom Right
-            Point PPBR = new Point(p.X + s.Width, p.Y + s.Height);
-
-
-            //Check wether either point is within the grid
-            bool insidebounds = CheckBounds(PPTL, GBR, GTL);
-            bool insidebounds2 = CheckBounds(PPBR, GBR, GTL);
-            //Set Point default 
-            //Point PR1 = new Point(GTL.X, GTL.Y);
-            //Point PR2 = new Point(GBR.X, GBR.Y);
-            Point PR1 = ClipPoint(PPTL, insidebounds, GTL);
-            Point PR2 = ClipPoint(PPBR, insidebounds2, GBR);
-            Size newS = GetElementSize(PR1, PR2);
-            setPosition(PositionPreview, PR1);
-            setSize(PositionPreview, newS);
+            double X1 = Math.Max(0, p.X);
+            double Y1 = Math.Max(0, p.Y);
+            double X2 = Math.Min(10, SizeToPoint(p, s).X);
+            double Y2 = Math.Min(10, SizeToPoint(p, s).Y);
+            Point newTL = new Point((int)X1, (int)Y1);
+            Size newSize = PointToSize(X1, Y1, X2, Y2);
+            setPosition(PositionPreview, newTL);
+            setSize(PositionPreview, newSize);
             PositionPreview.Stroke = new SolidColorBrush(Colors.Orange);
             PositionPreview.StrokeThickness = 3;
         }
@@ -165,6 +153,34 @@ namespace BattleShipGame
             double absHeight = pR2.Y - pR1.Y;
             Size result = new Size(absWidth, absHeight);
             return result;
+        }
+        private Size PointToSize(Point TopLeft, Point BottomRight)
+        {
+            double Width =Math.Abs(TopLeft.X - BottomRight.X);
+            double height = Math.Abs(TopLeft.Y - BottomRight.Y);
+            Size Result = new Size((int)Width, (int)Height);
+            return Result;
+        }
+        private Size PointToSize(double x1, double y1, double x2, double y2)
+        {
+            double Width = Math.Abs(x1 - x2);
+            double Height = Math.Abs(y1 - y2);
+            Size Result = new Size(Width, Height);
+            return Result;
+        }
+        private Point SizeToPoint(Point TopLeft,Size s)
+        {
+            double newX = TopLeft.X + s.Width;
+            double newY = TopLeft.Y + s.Height;
+            Point Result = new Point((int)newX, (int)newY);
+            return Result;
+        }
+        private Point SizeToPoint(Size s, Point BottomRight)
+        {
+            double newX = BottomRight.X - s.Width;
+            double newY = BottomRight.Y - s.Height;
+            Point Result = new Point((int)newX, (int)newY);
+            return Result;
         }
 
         private static Point ClipPoint(Point PPTL, bool insidebounds, Point PR1)

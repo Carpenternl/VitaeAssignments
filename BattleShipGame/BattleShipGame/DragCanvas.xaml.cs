@@ -23,6 +23,31 @@ namespace BattleShipGame
         private Size dragArm;
         private UIElement DraggableElement;
 
+        public UserControl MyDraggableElement
+        {
+            get { return (UserControl)GetValue(MyDraggableElementProperty); }
+            set { SetValue(MyDraggableElementProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for MyDraggableElement.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty MyDraggableElementProperty =
+            DependencyProperty.Register("MyDraggableElement", typeof(UserControl), typeof(DragCanvas), new PropertyMetadata(null,DraggableChanged));
+
+        /// <summary>
+        /// Occurs whenever the draggableElement is changed
+        /// </summary>
+        /// <param name="d"></param>
+        /// <param name="e"></param>
+        private static void DraggableChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            DragCanvas DC = d as DragCanvas;
+
+            DC.dragcontent.Children.Clear();
+            if(e.NewValue != null)
+            {
+            DC.dragcontent.Children.Add(e.NewValue as UserControl);
+            }
+        }
 
         public delegate void DragAddHandler(object sender, EventArgs e);
         public event DragAddHandler ElementAdded;
@@ -89,6 +114,34 @@ namespace BattleShipGame
             Sender.MouseLeftButtonDown -= ElementLift;
             Sender.MouseLeftButtonUp += DropElement;
             ElementDropped(sender, e);
+        }
+
+        public void StartDragDrop(UserControl Target,Size s)
+        {
+            ((Panel)Target.Parent).Children.Remove(Target);
+            dragArm = s;
+            MyDraggableElement = Target;
+            //Target.RenderSize = new Size(100, 100); //DEBUG
+            this.PreviewMouseMove += DragElement;
+            this.IsHitTestVisible = true;
+        }
+
+        private void DragElement(object sender, MouseEventArgs e)
+        {
+            
+            if(e.LeftButton == MouseButtonState.Pressed)
+            {
+                Canvas.SetLeft(MyDraggableElement, e.GetPosition(this).X - dragArm.Width);
+                Canvas.SetTop(MyDraggableElement, e.GetPosition(this).Y - dragArm.Height);
+                
+            }
+            else
+            {
+                this.PreviewMouseMove -= DragElement;
+                this.IsHitTestVisible = false;
+            }
+
+            e.Handled = true;
         }
 
     }
