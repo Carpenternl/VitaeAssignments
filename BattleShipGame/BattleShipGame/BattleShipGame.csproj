@@ -61,8 +61,8 @@
     <Compile Include="DragCanvas.xaml.cs">
       <DependentUpon>DragCanvas.xaml</DependentUpon>
     </Compile>
-    <Compile Include="GameField.xaml.cs">
-      <DependentUpon>GameField.xaml</DependentUpon>
+    <Compile Include="PlayingField.xaml.cs">
+      <DependentUpon>PlayingField.xaml</DependentUpon>
     </Compile>
     <Compile Include="MapCell.xaml.cs">
       <DependentUpon>MapCell.xaml</DependentUpon>
@@ -88,7 +88,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="GameField.xaml">
+    <Page Include="PlayingField.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

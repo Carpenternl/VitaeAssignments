@@ -18,15 +18,14 @@ namespace BattleShipGame
     /// <summary>
     /// Interaction logic for GameField.xaml
     /// </summary>
-    public partial class GameField : UserControl
+    public partial class PlayingField : UserControl
     {
-
 
 
 
         public readonly Size MapSize;
 
-        public GameField()
+        public PlayingField()
         {
             InitializeComponent();
             MapSize = new Size(GridContent.ColumnDefinitions.Count, GridContent.RowDefinitions.Count);
@@ -183,6 +182,27 @@ namespace BattleShipGame
             return Result;
         }
 
+        internal UIElement GetFieldSize()
+        {
+            return GridContent;
+        }
+
+        /// <summary>
+        /// Returns the renderSize of a single Tile
+        /// </summary>
+        /// <returns>Size in pixels</returns>
+        public Size GetTileSize() {
+            double w =  this.GridContent.ActualWidth;
+            double h =  this.GridContent.ActualHeight;
+            double gw = this.GridContent.ColumnDefinitions.Count;
+            double gh = this.GridContent.RowDefinitions.Count;
+            double w_gw = w / gw;
+            double h_gh = h / gh;
+            Size Result = new Size(w_gw, h_gh);
+            return Result;
+        }
+
+
         private static Point ClipPoint(Point PPTL, bool insidebounds, Point PR1)
         {
             if (insidebounds)
@@ -201,7 +221,7 @@ namespace BattleShipGame
             return false;
         }
 
-        private Point Snap(Point rawposition)
+        public Point Snap(Point rawposition)
         {
             double SnappedX = rawposition.X * GridContent.ColumnDefinitions.Count / GridContent.ActualWidth;
             double SnappedY = rawposition.Y * GridContent.RowDefinitions.Count / GridContent.ActualHeight;

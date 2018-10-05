@@ -20,29 +20,36 @@ namespace BattleShipGame
     /// </summary>
     public partial class SetupWindow : Page
     {
+        /* = The Setup Window Will Handle All the Interaction Logic during placement of your ship
+         * functionalities to implement:
+         * - Select Ship
+         * - Drag Ship
+         * 
+          */
+
+
+        private void SelectShip(object sender, MouseButtonEventArgs e)
+        {
+            AddShipButtonControl ShipItemSender = sender as AddShipButtonControl;
+            Ship s = new Ship(ShipItemSender.NewShipType);
+            Size TileDim = playingField.GetTileSize(); // get the Size of A Tile 
+            double resx = Grid.GetColumnSpan(s) * TileDim.Width;
+            double resy = Math.Max(Grid.GetRow(s) * TileDim.Height, TileDim.Height);
+            Size ExpectedSize = new Size(resx, resy);
+            s.Width = ExpectedSize.Width;
+            s.Height = ExpectedSize.Height;
+            Size MousePos = new Size(resx / 2, resy / 2);
+            this.ShipPanel.Children.Add(s);
+            this.MyDragCanvas.StartDragDrop(s, MousePos);
+        }
+        /*
+     * 
+     * - Drop/ Place Ship
+     * - Rotate Ship
+     * - Finish Setup
+     * -
+     */
         public Rectangle hitbox = new Rectangle();
-
-
-
-        public static Size GetCellSize(DependencyObject obj)
-        {
-            return (Size)obj.GetValue(CellSizeProperty);
-        }
-
-        public static void SetCellSize(DependencyObject obj, Size value)
-        {
-            obj.SetValue(CellSizeProperty, value);
-        }
-
-        // Using a DependencyProperty as the backing store for CellSize.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty CellSizeProperty =
-            DependencyProperty.RegisterAttached("CellSize", typeof(Size), typeof(SetupWindow), new PropertyMetadata(new Size(16,16),SizeChangedCallBack));
-
-        private static void SizeChangedCallBack(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        { 
-            
-           // throw new NotImplementedException();
-        }
 
         public SetupWindow()
         {
@@ -99,23 +106,9 @@ namespace BattleShipGame
             Canvas.SetTop(dragElement, y + offsetY);
         }
         #endregion
-        Point dragArm;
         private void Dragging(object sender, MouseEventArgs e)
         {
-            //if (e.LeftButton == MouseButtonState.Pressed)
-            //{
-            //    Point target = e.GetPosition(DragOverlay);
-            //    setDragPosition(DragOverlay.Children[0], target, dragArm.X, dragArm.Y);
-            //    Point BoundPoint = e.GetPosition(GameField);
-            //    if (BoundPoint.X > 0 & BoundPoint.Y > 0)
-            //    {
-            //        ((UIElement)DragOverlay.Children[0]).SetValue(BackgroundProperty, new SolidColorBrush(Colors.Red));
-            //    }
-            //}
-            //else
-            //{
-            //    StopDragging();
-            //}
+
         }
 
         private void StopDragging()
@@ -147,7 +140,7 @@ namespace BattleShipGame
 
         private void InitializeDrag(UIElement newShip, Point point1, Point point2)
         {
-            
+
             //double arm = point2.X *(double) newShip.GetValue(WidthProperty);
             //double army = point2.Y * (double) newShip.GetValue(HeightProperty);
             //dragArm = new Point(-arm, -army);
@@ -170,11 +163,59 @@ namespace BattleShipGame
 
         private void AddShipButtonControl_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            Size s = (Size) e.GetPosition(sender as AddShipButtonControl);
+            Size s = (Size)e.GetPosition(sender as AddShipButtonControl);
             Ship myship = new Ship(Shiptype.Scout);
             this.ShipPanel.Children.Add(myship);
-            this.MyDragCanvas.StartDragDrop(myship,s);
+            this.MyDragCanvas.StartDragDrop(myship, s);
+        }
+
+        private void MyDragCanvas_DragQuery(object sender, MouseEventArgs e)
+        {
+            DragCanvas DragSender = sender as DragCanvas;
+            bool res = HitBoxOverlap(DragSender.MyDraggableElement, playingField.GetFieldSize());
+            if (res)
+            {
+                Point p = playingField.Snap()
+                playingField.SetPreviewSize()
+            }
+            this.PlayerNameDisplay.Content = $"Result{res}";
+        }
+
+        private bool HitBoxOverlap(UIElement elementA, UIElement elementB)
+        {
+            Rect RectA = new Rect()
+            {
+                Location = elementA.TranslatePoint(default(Point), this),
+                Size = elementA.RenderSize,
+            };
+            Point[] PointsA = { RectA.TopLeft, RectA.TopRight, RectA.BottomRight, RectA.BottomLeft };
+            Rect RectB = new Rect()
+            {
+                Location = elementB.TranslatePoint(default(Point), this),
+                Size = elementB.RenderSize,
+            };
+            return HitBoxOverlap(RectA, RectB);
+        }
+        private bool HitBoxOverlap(Rect hitBoxA, Rect hitBoxB)
+        {
+            Point[] CornersA = { hitBoxA.TopLeft, hitBoxA.TopRight, hitBoxA.BottomRight, hitBoxA.BottomLeft };
+            foreach (var P in CornersA)
+            {
+                if (P.X > hitBoxB.Left & P.X < hitBoxB.Right)
+                {
+                    if (P.Y > hitBoxB.Top & P.Y < hitBoxB.Bottom)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+            
+        }
+        private void Hitbl(Rect hitBoxA,Rect hitBoxB)
+        {
+
         }
     }
-    public enum Shiptype { Scout,Submarine,BattleShip,Aircraftcarrier};
+    public enum Shiptype { Scout, Submarine, BattleShip, Aircraftcarrier };
 }

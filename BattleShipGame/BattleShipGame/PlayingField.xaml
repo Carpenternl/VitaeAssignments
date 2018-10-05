@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="BattleShipGame.GameField"
+﻿<UserControl x:Class="BattleShipGame.PlayingField"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -6,7 +6,10 @@
              xmlns:local="clr-namespace:BattleShipGame"
              mc:Ignorable="d" 
              d:DesignHeight="440" d:DesignWidth="440">
-    <Grid x:Name="Gridbody" ShowGridLines="True">
+    <UserControl.Resources>
+        <Size x:Key="FieldSize" Width="11" Height="11" />
+    </UserControl.Resources>
+    <Grid x:Name="Gridbody" ShowGridLines="True" Height="{Binding ActualWidth, Mode=OneWay, RelativeSource={RelativeSource Self}}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"></ColumnDefinition>
             <ColumnDefinition Width="10*"></ColumnDefinition>
@@ -90,9 +93,6 @@
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <Button Grid.ColumnSpan="3" Content="Button" Grid.Column="3" Grid.Row="2" Grid.RowSpan="1"/>
-            <Button Grid.Row="5" Grid.Column="5"/>
-            <Button Grid.Row="8" Grid.Column="8"/>
             <Rectangle x:Name="PositionPreview" Stroke="Red" StrokeThickness="3" />
         </Grid>
         <Label x:Name="debug" Grid.Column="0" Grid.Row="0"/>
