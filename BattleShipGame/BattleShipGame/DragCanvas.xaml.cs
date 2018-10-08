@@ -76,8 +76,6 @@ namespace BattleShipGame
             UIElement Sender = sender as UIElement;
         }
 
-
-
         public void StartDragDrop(UserControl Target,Size s)
         {
             ((Panel)Target.Parent).Children.Remove(Target);
@@ -90,7 +88,7 @@ namespace BattleShipGame
         // Drag The Element To the Mouse Location
         private void OnPrevMouseMoveDragElement(object sender, MouseEventArgs e)
         {
-            
+            //Move The Element With The MouseButton
             if(e.LeftButton == MouseButtonState.Pressed)
             {
                 Canvas.SetLeft(MyDraggableElement, e.GetPosition(this).X - dragArm.Width);
@@ -100,8 +98,10 @@ namespace BattleShipGame
             }
             else
             {
+                //Stop MouseMoveEvent and disable Hittesting 
                 this.PreviewMouseMove -= OnPrevMouseMoveDragElement;
                 this.IsHitTestVisible = false;
+                //Drop The Element
             }
 
             e.Handled = true;

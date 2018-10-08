@@ -168,19 +168,29 @@ namespace BattleShipGame
             this.ShipPanel.Children.Add(myship);
             this.MyDragCanvas.StartDragDrop(myship, s);
         }
-
         private void MyDragCanvas_DragQuery(object sender, MouseEventArgs e)
         {
             DragCanvas DragSender = sender as DragCanvas;
-            bool res = HitBoxOverlap(DragSender.MyDraggableElement, playingField.GetFieldSize());
-            if (res)
+            UserControl DragElement = DragSender.MyDraggableElement;
+            //Get The hitbox of the draggable Element
+            
+            Point DragLocation = DragElement.TranslatePoint(default(Point), this);
+            Size DragSize = DragElement.RenderSize;
+            Rect DragHitBox = new Rect(DragLocation, DragSize);
+            var PF = playingField.GridContent;
+            Point FieldLocation = PF.TranslatePoint(default(Point), this);
+            Size FieldSize = PF.RenderSize;
+            Rect FieldHitBox = new Rect(FieldLocation, FieldSize);
+            //Check if there is a HitBoxOverLap
+            bool hitboxOverlap = HitBoxOverlap(DragHitBox, FieldHitBox);
+            //the Draggable Element is hovering over the FieldHitbox,
+            if (hitboxOverlap)
             {
-                Point p = playingField.Snap()
-                playingField.SetPreviewSize()
+                playingField.FindSpace(DragElement);
             }
-            this.PlayerNameDisplay.Content = $"Result{res}";
-        }
+            playingField.debug.Content += $" \n touch? {hitboxOverlap}";
 
+        }
         private bool HitBoxOverlap(UIElement elementA, UIElement elementB)
         {
             Rect RectA = new Rect()
@@ -210,9 +220,9 @@ namespace BattleShipGame
                 }
             }
             return false;
-            
+
         }
-        private void Hitbl(Rect hitBoxA,Rect hitBoxB)
+        private void Hitbl(Rect hitBoxA, Rect hitBoxB)
         {
 
         }
