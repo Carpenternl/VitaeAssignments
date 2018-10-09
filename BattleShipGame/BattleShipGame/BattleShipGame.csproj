@@ -58,6 +58,9 @@
       <DependentUpon>AddShipButtonControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="CellData.cs" />
+    <Compile Include="DemoChildrenCollection.xaml.cs">
+      <DependentUpon>DemoChildrenCollection.xaml</DependentUpon>
+    </Compile>
     <Compile Include="DragCanvas.xaml.cs">
       <DependentUpon>DragCanvas.xaml</DependentUpon>
     </Compile>
@@ -73,6 +76,9 @@
     <Compile Include="Ship.xaml.cs">
       <DependentUpon>Ship.xaml</DependentUpon>
     </Compile>
+    <Compile Include="TemperaryControl.xaml.cs">
+      <DependentUpon>TemperaryControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="VisualCell.xaml.cs">
       <DependentUpon>VisualCell.xaml</DependentUpon>
     </Compile>
@@ -81,6 +87,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="BattleShipStartup.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DemoChildrenCollection.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -116,6 +126,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Ship.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TemperaryControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -155,6 +169,9 @@
     <Folder Include="Assets\Ships\Carrier\" />
     <Folder Include="Assets\Ships\Scout\" />
     <Folder Include="Assets\Ships\Submarine\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\ShipPreviewTexture.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

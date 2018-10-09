@@ -67,6 +67,8 @@ namespace BattleShipGame
             InitializeComponent();
             MapSize = new Size(GridContent.ColumnDefinitions.Count, GridContent.RowDefinitions.Count);
             this.GridContent.Children.Add(ShipPreviewPosition);
+            PositionPreview.BorderBrush = new SolidColorBrush(Colors.Orange);
+            PositionPreview.BorderThickness = new Thickness(3);
         }
         /// <summary>
         /// Check whether the a space on the grid is occupied
@@ -179,8 +181,7 @@ namespace BattleShipGame
             Size newSize = PointToSize(X1, Y1, X2, Y2);
             setPosition(PositionPreview, newTL);
             setSize(PositionPreview, newSize);
-            PositionPreview.Stroke = new SolidColorBrush(Colors.Orange);
-            PositionPreview.StrokeThickness = 3;
+           
         }
 
         private Size GetElementSize(Point pR1, Point pR2)
