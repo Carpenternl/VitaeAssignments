@@ -54,6 +54,7 @@ namespace BattleShipGame
         public SetupWindow()
         {
             InitializeComponent();
+
         }
 
         private void GameField_MapHover(Point GridIndex)
