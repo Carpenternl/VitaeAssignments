@@ -64,7 +64,7 @@
             <Label Content="10" Grid.Row="9" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
         </Grid>
-        <Grid x:Name="GridContent" Grid.Row="1" Grid.Column="1" ShowGridLines="True" MouseMove="GridContent_MouseMove" Background="#00000000">
+        <Grid x:Name="GridContent" Grid.Row="1" Grid.Column="1" ShowGridLines="True" MouseMove="GridContent_MouseMove" PreviewMouseMove="CheckForCellMove" Background="#00000000">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
@@ -92,17 +92,6 @@
                 <RowDefinition/>
 
             </Grid.RowDefinitions>
-            <Grid.Resources>
-                <SolidColorBrush x:Key="PreviewColor" Color="Green"/>
-                <Point x:Key="ShipPos" X="1" Y="1"/>
-            </Grid.Resources>
-            <!--MouseEnter="GridContent_MouseEnter" -->
-            <Rectangle x:Name="PositionPreviewBuffer" local:PlayingField.ElementPosition="1,1" Grid.ColumnSpan="2" Fill="{DynamicResource PreviewColor}" >
-                <Rectangle.OpacityMask>
-                    <ImageBrush ImageSource="Assets/ShipPreviewTexture.png" Stretch="UniformToFill" TileMode="Tile"/>
-                </Rectangle.OpacityMask>
-            </Rectangle>
-            <Border local:PlayingField.ElementPosition="0,0" Grid.ColumnSpan="4" Grid.RowSpan="3" x:Name="PositionPreview" BorderBrush="{DynamicResource PreviewColor}" BorderThickness="3" Grid.Row="0" Grid.Column="0"/>
         </Grid>
         <Label x:Name="debug" Grid.Column="0" Grid.Row="0"/>
     </Grid>

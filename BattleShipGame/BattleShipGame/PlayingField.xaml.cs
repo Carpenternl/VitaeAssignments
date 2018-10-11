@@ -22,12 +22,16 @@ namespace BattleShipGame
     [ContentProperty(nameof(Children))]
     public partial class PlayingField : UserControl
     {
+        #region Static Values
         private static int MinimumRows = 10;
         private static int MinimumCollumns = 10;
         private static int MaximumRows =20;
         private static int MaximumCollumns = 20;
-
+        #endregion
+        //Properties of the PlayingField
         #region Properties
+        // Property used to access Children from a child panel
+        #region Children
         public UIElementCollection Children
         {
             get { return (UIElementCollection)GetValue(ChildrenProperty.DependencyProperty); }
@@ -35,7 +39,9 @@ namespace BattleShipGame
         }
         public static readonly DependencyPropertyKey ChildrenProperty =
             DependencyProperty.RegisterReadOnly(nameof(Children) , typeof(UIElementCollection), typeof(PlayingField), new PropertyMetadata());
-        //Property used to position elements on the Grid
+        #endregion
+        // Property used to position elements on the grid
+        #region ElementPosition
         public static Point GetElementPosition(DependencyObject obj)
         {
             return (Point)obj.GetValue(ElementPositionProperty);
@@ -47,21 +53,34 @@ namespace BattleShipGame
         public static readonly DependencyProperty ElementPositionProperty =
             DependencyProperty.RegisterAttached("ElementPosition", typeof(Point), typeof(PlayingField),
                 new PropertyMetadata(new Point(0, 0),ElemntPositionChanged, CoerceElemntPositn));
-        #region ElementPositionPropertyLogic
+        #region ElementPositionLogic
         // This function gets called every time the Property header changes.
         private static object CoerceElemntPositn(DependencyObject d, object baseValue)
         {
-            // step1: because the gridsize has a default size;
-            Size gridSize = (Size)d.GetValue(BoardSizeProperty);
+            // get the size of the grid
+            Size _grid = (Size)d.GetValue(BoardSizeProperty);
             // We can assume that the value is a point, convert the basevalue
             Point EnteredValue = (Point)baseValue;
-            double CurrentX = Math.Max(EnteredValue.X, 0);
-            CurrentX = Math.Min(CurrentX, gridSize.Width);
-            double CurrentY = Math.Max(EnteredValue.Y, 0);
-            CurrentY = Math.Min(EnteredValue.Y, gridSize.Height);
+            double CurrentX = CoerseRange(0, EnteredValue.X, _grid.Width);
+            double CurrentY = CoerseRange(0, EnteredValue.Y, _grid.Height);
             return new Point(CurrentX, CurrentY);
-
         }
+        // This function will coarse our value within a range
+        #region CoerseRange
+        /// <summary>
+        /// Makes sure your value moves within your defined range
+        /// </summary>
+        /// <param name="min">the minimum value required</param>
+        /// <param name="arg">the value to compare</param>
+        /// <param name="max">the maximum value needed</param>
+        /// <returns>Returns arg or the min/max value based upon difference </returns>
+        public static double CoerseRange(double min, double arg,double max)
+        {
+            double Arg0 = Math.Max(arg, min);
+            double Arg1 = Math.Min(Arg0, max);
+            return Arg1;
+        }
+        #endregion
         // the Dependency Property changed, update the Grid Position
         private static void ElemntPositionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -74,43 +93,50 @@ namespace BattleShipGame
         }
 
         #endregion
-
-
-
+        // ElementPositionLogic
+        #endregion
+        // Property used to setup the grid-layout and labels.
+        #region BoardSize
         public Size BoardSize
         {
             get { return (Size)GetValue(BoardSizeProperty); }
             set { SetValue(BoardSizeProperty, value); }
         }
-
         // Using a DependencyProperty as the backing store for BoardSize.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty BoardSizeProperty =
             DependencyProperty.Register("BoardSize", typeof(Size), typeof(PlayingField), new PropertyMetadata(new Size(10,10),BZChanged,CoerceBoardSizeProperty));
-
+        #region BoardSizeLogic
         private static object CoerceBoardSizeProperty(DependencyObject d, object baseValue)
         {
             Size BaseValueSize = (Size)baseValue;
-            int ResultX = (int) Math.Min(MaximumCollumns, Math.Max(BaseValueSize.Width, MinimumCollumns)); // MinW < BaseValue.Width < MaxW
-            int ResultY = (int) Math.Min(MaximumRows, Math.Max(BaseValueSize.Height, MinimumRows)); // MinH < BaseValue.Height < MaxH
+            int ResultX = (int)CoerseRange(MinimumCollumns, BaseValueSize.Width, MaximumCollumns); // MinW < BaseValue.Width < MaxW
+            int ResultY = (int)CoerseRange(MinimumRows, BaseValueSize.Height, MaximumRows); // MinH < BaseValue.Height < MaxH
             Size Result = new Size(ResultX, ResultY);
             return Result;
         }
-
         private static void BZChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             PlayingField P = d as PlayingField;
             Grid PG = P.Gridbody;
-            Size Start = (Size)e.OldValue;
             Size End = (Size)e.NewValue;
-            int X =(int) End.Width;
-            int Y =(int) End.Height;
-            ResetColumns(P.HorizLabels.ColumnDefinitions, X);
-            ResetRows(P.VertiLabels.RowDefinitions, Y);
-            ResetColumns(P.GridContent.ColumnDefinitions, X);
-            ResetRows(P.GridContent.RowDefinitions, Y);
-            
+            int X = (int)End.Width;
+            int Y = (int)End.Height;
+            RefreshGrid(P, X, Y);
             PG.RowDefinitions[1].Height = new GridLength(Y, GridUnitType.Star);
             PG.ColumnDefinitions[1].Width = new GridLength(X, GridUnitType.Star);
+        }
+        /// <summary>
+        /// Logic for 'redrawing' the grid.
+        /// </summary>
+        /// <param name="P"></param>
+        /// <param name="rows"></param>
+        /// <param name="collumns"></param>
+        private static void RefreshGrid(PlayingField P, int rows, int collumns)
+        {
+            ResetColumns(P.HorizLabels.ColumnDefinitions, rows);
+            ResetRows(P.VertiLabels.RowDefinitions, collumns);
+            ResetColumns(P.GridContent.ColumnDefinitions, rows);
+            ResetRows(P.GridContent.RowDefinitions, collumns);
         }
         /// <summary>
         /// Clears the Collection and creates n amount of new definitions
@@ -138,32 +164,85 @@ namespace BattleShipGame
                 collumns.Add(new ColumnDefinition());
             }
         }
+        #endregion
+        // BoardSize
+        #endregion
+        // Property used to set the size of elements on the grid
+        #region ElementSize
 
 
+        public static Size GetElementSize(DependencyObject obj)
+        {
+            return (Size)obj.GetValue(ElementSizeProperty);
+        }
 
+        public static void SetElementSize(DependencyObject obj, Size value)
+        {
+            obj.SetValue(ElementSizeProperty, value);
+        }
+
+        // Using a DependencyProperty as the backing store for ElementSize.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ElementSizeProperty =
+            DependencyProperty.RegisterAttached("ElementSize", typeof(Size), typeof(PlayingField), new PropertyMetadata(default(Size)));
+        //private static object CoerceElemntPositn(DependencyObject d, object baseValue)
+        //{
+        //    // get the size of the grid
+        //    Size _grid = (Size)d.GetValue(BoardSizeProperty);
+        //    // We can assume that the value is a point, convert the basevalue
+        //    Point EnteredValue = (Point)baseValue;
+        //    double CurrentX = CoerseRange(0, EnteredValue.X, _grid.Width);
+        //    double CurrentY = CoerseRange(0, EnteredValue.Y, _grid.Height);
+        //    return new Point(CurrentX, CurrentY);
+        //}
+
+        //public static double CoerseRange(double min, double arg, double max)
+        //{
+        //    double Arg0 = Math.Max(arg, min);
+        //    double Arg1 = Math.Min(Arg0, max);
+        //    return Arg1;
+        //}
+
+        //private static void ElemntPositionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        //{
+        //    UIElement target = d as UIElement;
+        //    Point ePoint = (Point)e.NewValue;
+        //    Grid.SetColumn(target, (int)ePoint.X);
+        //    Grid.SetRow(target, (int)ePoint.Y);
+
+        //    //throw new NotImplementedException();
+        //}
 
         #endregion
-        public readonly Size MapSize;
+
+        #endregion
+
         Border ShipPreviewPosition = new Border() { BorderThickness = new Thickness(2), BorderBrush = new SolidColorBrush(Colors.Purple) };
 
 
 
-
-
-        // Using a DependencyProperty as the backing store for ElementPosition.  This enables animation, styling, binding, etc...
-
-
-
-        //Constructor
         public PlayingField()
         {
             InitializeComponent();
             // This piece of code allows the control to hold elements in another userControl
             this.Children = GridContent.Children;    // https://stackoverflow.com/questions/9094486/adding-children-to-usercontrol
-            MapSize = new Size(GridContent.ColumnDefinitions.Count, GridContent.RowDefinitions.Count);
-            PositionPreview.BorderBrush = new SolidColorBrush(Colors.Orange);
-            PositionPreview.BorderThickness = new Thickness(3);
+            PositionChanged += PlayingField_PositionChanged;
         }
+
+        private void PlayingField_PositionChanged(object sender, MouseEventArgs e)
+        {
+            PlayingField F = sender as PlayingField;
+            Point P = F.LastGridPoint;
+
+        }
+
+        #region events
+        public delegate void MousePositionChanged(object sender, MouseEventArgs e);
+        public event MousePositionChanged PositionChanged;
+        #endregion
+
+        // Public Functions used to interact with the Grid
+        #region Public Functions
+        #endregion
 
 
 
@@ -217,8 +296,11 @@ namespace BattleShipGame
         /// <returns></returns>
         public bool CheckSpace(Point position, Size area)
         {
+            double PX = position.X;
+            double PY = position.Y;
+            Grid _grid = this.GridContent;
             // The space must be within the box
-            if (position.X < 0 | position.Y < 0 | position.X + area.Width > MapSize.Width | position.Y + area.Height > MapSize.Height)
+            if (PX < 0 | PY < 0 | position.X + area.Width > _grid.ColumnDefinitions.Count | position.Y + area.Height > _grid.RowDefinitions.Count)
             {
                 return false;
             }
@@ -253,7 +335,6 @@ namespace BattleShipGame
             debug.Content += $"\n {space.ToString()}";
             bool bigspace = CheckSpace(new Point((int)Snapped.X, (int)Snapped.Y), new Size(2, 2));
             debug.Content += $"\n{bigspace.ToString()}";
-            SetPreviewSize(new Point(Snapped.X - 1, Snapped.Y - 1), new Size(3, 3));
         }
 
         public void setPosition(UIElement child, Point p)
@@ -267,19 +348,6 @@ namespace BattleShipGame
             Grid.SetRowSpan(child, (int)s.Height);
         }
 
-        public void SetPreviewSize(Point p, Size s)
-        {
-            // Grid Top Left
-            double X1 = Math.Max(0, p.X);
-            double Y1 = Math.Max(0, p.Y);
-            double X2 = Math.Min(10, SizeToPoint(p, s).X);
-            double Y2 = Math.Min(10, SizeToPoint(p, s).Y);
-            Point newTL = new Point((int)X1, (int)Y1);
-            Size newSize = PointToSize(X1, Y1, X2, Y2);
-            setPosition(PositionPreview, newTL);
-            setSize(PositionPreview, newSize);
-
-        }
 
         private Size GetElementSize(Point pR1, Point pR2)
         {
@@ -353,13 +421,14 @@ namespace BattleShipGame
         /// <returns>Size in pixels</returns>
         public Size GetTileSize()
         {
-            double w = this.GridContent.ActualWidth;
-            double h = this.GridContent.ActualHeight;
-            double gw = this.GridContent.ColumnDefinitions.Count;
-            double gh = this.GridContent.RowDefinitions.Count;
-            double w_gw = w / gw;
-            double h_gh = h / gh;
-            Size Result = new Size(w_gw, h_gh);
+            Grid _Grid = GridContent;
+            double Width = _Grid.ActualWidth;
+            double Height = _Grid.ActualHeight;
+            double TileColumns = _Grid.ColumnDefinitions.Count;
+            double TileRows = _Grid.RowDefinitions.Count;
+            double TileWidth = Width / TileColumns;
+            double TileHeight = Height / TileRows;
+            Size Result = new Size(TileWidth, TileHeight);
             return Result;
         }
 
@@ -382,11 +451,29 @@ namespace BattleShipGame
             return false;
         }
 
-        public Point Snap(Point rawposition)
+        public Point Snap(Point raw)
         {
-            double SnappedX = rawposition.X * GridContent.ColumnDefinitions.Count / GridContent.ActualWidth;
-            double SnappedY = rawposition.Y * GridContent.RowDefinitions.Count / GridContent.ActualHeight;
-            return new Point((int)SnappedX, (int)SnappedY);
+            Grid _grid = GridContent;
+            double SnappedX = raw.X * _grid.ColumnDefinitions.Count / _grid.ActualHeight;
+            double SnappedY = raw.Y * _grid.RowDefinitions.Count / _grid.ActualHeight;
+            return new Point(SnappedX,SnappedY);
+        }
+        public Point SnapInt(Point raw)
+        {
+            Point Snapped = Snap(raw);
+            return new Point(Math.Floor(Snapped.X),Math.Floor(Snapped.Y));
+        }
+        public Point LastGridPoint { get; private set; }
+        // checks if the mouse has moved to a different cell during a mousemove, reducing event calls
+        private void CheckForCellMove(object sender, MouseEventArgs e)
+        {
+            Point MousePoint = e.GetPosition(GridContent);
+            Point GridPoint = SnapInt(MousePoint);
+            if(GridPoint != LastGridPoint)
+            {
+                LastGridPoint = GridPoint;
+                PositionChanged(this, e);
+            }
         }
     }
 }

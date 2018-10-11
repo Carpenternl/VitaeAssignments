@@ -31,8 +31,8 @@
                 </StackPanel>
                 <Button Content="Ships left: " Grid.Row="2"/>
             </Grid>
-            <local:PlayingField BoardSize="11,11" x:Name="playingField" Grid.ColumnSpan="1" Grid.Column="1" Width="{Binding ActualHeight, Mode=OneWay, RelativeSource={RelativeSource Self}}">
-                <local:Ship ShipTypeOf="Scout" Grid.RowSpan="3"  />
+            <local:PlayingField BoardSize="11,11" x:Name="playingField" Grid.ColumnSpan="1" Grid.Column="1" Width="{Binding ActualHeight, Mode=OneWay, RelativeSource={RelativeSource Self}}" PositionChanged="playingField_PositionChanged">
+                <Border BorderBrush="Orange" BorderThickness="2"/>
             </local:PlayingField>
         </Grid>
     </Grid>

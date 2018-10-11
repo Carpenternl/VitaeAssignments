@@ -20,14 +20,6 @@ namespace BattleShipGame
     /// </summary>
     public partial class SetupWindow : Page
     {
-        /* = The Setup Window Will Handle All the Interaction Logic during placement of your ship
-         * functionalities to implement:
-         * - Select Ship
-         * - Drag Ship
-         * 
-          */
-
-
         private void SelectShip(object sender, MouseButtonEventArgs e)
         {
             AddShipButtonControl ShipItemSender = sender as AddShipButtonControl;
@@ -54,7 +46,6 @@ namespace BattleShipGame
         public SetupWindow()
         {
             InitializeComponent();
-
         }
 
         private void GameField_MapHover(Point GridIndex)
@@ -226,6 +217,12 @@ namespace BattleShipGame
         private void Hitbl(Rect hitBoxA, Rect hitBoxB)
         {
 
+        }
+
+        private void playingField_PositionChanged(object sender, MouseEventArgs e)
+        {
+            PlayingField P = sender as PlayingField;
+            PlayingField.SetElementPosition(P.Children[0], P.LastGridPoint);
         }
     }
     public enum Shiptype { Scout, Submarine, BattleShip, Aircraftcarrier };
