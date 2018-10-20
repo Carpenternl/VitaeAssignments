@@ -17,7 +17,7 @@ using System.Windows.Shapes;
 namespace BattleShipGame
 {
     /// <summary>
-    /// Interaction logic for GameField.xaml
+    /// Interaction logic for GameField.xaml  
     /// </summary>
     [ContentProperty(nameof(Children))]
     public partial class PlayingField : UserControl
