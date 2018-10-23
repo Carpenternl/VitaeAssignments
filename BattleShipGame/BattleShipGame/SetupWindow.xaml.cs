@@ -20,6 +20,7 @@ namespace BattleShipGame
     /// </summary>
     public partial class SetupWindow : Page
     {
+        #region Properties
         private void SelectShip(object sender, MouseButtonEventArgs e)
         {
             AddShipButtonControl ShipItemSender = sender as AddShipButtonControl;
@@ -47,7 +48,7 @@ namespace BattleShipGame
         {
             InitializeComponent();
         }
-
+        #endregion
         private void GameField_MapHover(Point GridIndex)
         {
 

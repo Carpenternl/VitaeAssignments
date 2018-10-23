@@ -227,12 +227,11 @@ namespace BattleShipGame
             this.Children = GridContent.Children;    // https://stackoverflow.com/questions/9094486/adding-children-to-usercontrol
             PositionChanged += PlayingField_PositionChanged;
         }
-
+        // Event handler that gets called when the cursor moves to a different Cell.
         private void PlayingField_PositionChanged(object sender, MouseEventArgs e)
         {
             PlayingField F = sender as PlayingField;
             Point P = F.LastGridPoint;
-
         }
 
         #region events
