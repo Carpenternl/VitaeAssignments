@@ -217,9 +217,6 @@ namespace BattleShipGame
         #endregion
 
         Border ShipPreviewPosition = new Border() { BorderThickness = new Thickness(2), BorderBrush = new SolidColorBrush(Colors.Purple) };
-
-
-
         public PlayingField()
         {
             InitializeComponent();
@@ -231,7 +228,7 @@ namespace BattleShipGame
         private void PlayingField_PositionChanged(object sender, MouseEventArgs e)
         {
             PlayingField F = sender as PlayingField;
-            Point P = F.LastGridPoint;
+            Point P = F.CurrentGridPosition;
 
         }
 
@@ -319,11 +316,6 @@ namespace BattleShipGame
                 }
                 return true;
             }
-        }
-
-        private void GridContent_MouseEnter(object sender, MouseEventArgs e)
-        {
-
         }
 
         private void GridContent_MouseMove(object sender, MouseEventArgs e)
@@ -450,7 +442,11 @@ namespace BattleShipGame
             }
             return false;
         }
-
+        /// <summary>
+        /// Returns the row and and column location of the cursor on the field.
+        /// </summary>
+        /// <param name="raw"></param>
+        /// <returns></returns>
         public Point Snap(Point raw)
         {
             Grid _grid = GridContent;
@@ -458,20 +454,24 @@ namespace BattleShipGame
             double SnappedY = raw.Y * _grid.RowDefinitions.Count / _grid.ActualHeight;
             return new Point(SnappedX,SnappedY);
         }
+        /// <summary>
+        ///  Returns the row and and column location of the cursor on the field rounded to integers
+        /// </summary>
+        /// <param name="raw"></param>
         public Point SnapInt(Point raw)
         {
             Point Snapped = Snap(raw);
             return new Point(Math.Floor(Snapped.X),Math.Floor(Snapped.Y));
         }
-        public Point LastGridPoint { get; private set; }
+        public Point CurrentGridPosition { get; private set; }
         // checks if the mouse has moved to a different cell during a mousemove, reducing event calls
-        private void CheckForCellMove(object sender, MouseEventArgs e)
+        private void MouesMovedEvent(object sender, MouseEventArgs e)
         {
-            Point MousePoint = e.GetPosition(GridContent);
-            Point GridPoint = SnapInt(MousePoint);
-            if(GridPoint != LastGridPoint)
+            Point CursorPosition = e.GetPosition(GridContent);
+            Point NewGridPosition = SnapInt(CursorPosition);
+            if(NewGridPosition != CurrentGridPosition)
             {
-                LastGridPoint = GridPoint;
+                CurrentGridPosition = NewGridPosition;
                 PositionChanged(this, e);
             }
         }
