@@ -21,24 +21,27 @@ namespace BattleShipGame
     public partial class AddShipButtonControl : UserControl
     {
 
-        public Shiptype NewShipType
+        public VesselClass NewVesselClass
         {
-            get { return (Shiptype)GetValue(NewShipTypeProperty); }
-            set { SetValue(NewShipTypeProperty, value); }
+            get { return (VesselClass)GetValue(NewVesselClassProperty); }
+            set { SetValue(NewVesselClassProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for NewShipType.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty NewShipTypeProperty =
-            DependencyProperty.Register("NewShipType", typeof(Shiptype), typeof(AddShipButtonControl), new PropertyMetadata(Shiptype.Scout));
-        public int ShipCount
-        {
-            get { return (int)GetValue(ShipCountProperty); }
-            set { SetValue(ShipCountProperty, value); }
-        }
-        // Using a DependencyProperty as the backing store for ShipTotal.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty ShipCountProperty =
-            DependencyProperty.Register("ShipCount", typeof(int), typeof(AddShipButtonControl), new PropertyMetadata(0));
+        // Using a DependencyProperty as the backing store for NewVesselClass.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty NewVesselClassProperty =
+            DependencyProperty.Register("NewVesselClass", typeof(VesselClass), typeof(AddShipButtonControl), new PropertyMetadata(VesselClass.None));
 
+
+
+        public int Inventory
+        {
+            get { return (int)GetValue(InventoryProperty); }
+            set { SetValue(InventoryProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for Inventory.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty InventoryProperty =
+            DependencyProperty.Register("Inventory", typeof(int), typeof(AddShipButtonControl), new PropertyMetadata(0));
 
         public AddShipButtonControl()
         {

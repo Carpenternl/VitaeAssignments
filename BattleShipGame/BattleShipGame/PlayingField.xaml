@@ -15,7 +15,7 @@
             <RowDefinition Height="1*"/>
             <RowDefinition Height="10*"/>
         </Grid.RowDefinitions>
-        <Grid x:Name="HorizLabels" Grid.Row="0" Grid.Column="1" ShowGridLines="True">
+        <Grid x:Name="ColumnLabels" Grid.Row="0" Grid.Column="1" ShowGridLines="True">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
@@ -39,7 +39,7 @@
             <Label Grid.Column="8" Content="I" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             <Label Grid.Column="9" Content="J" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         </Grid>
-        <Grid x:Name="VertiLabels" Grid.Row="1" Grid.Column="0" ShowGridLines="True">
+        <Grid x:Name="RowLabels" Grid.Row="1" Grid.Column="0" ShowGridLines="True">
             <Grid.RowDefinitions>
                 <RowDefinition/>
                 <RowDefinition/>

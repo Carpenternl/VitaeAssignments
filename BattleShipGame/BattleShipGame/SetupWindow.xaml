@@ -5,7 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:BattleShipGame"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="620"
+      d:DesignHeight="2500" d:DesignWidth="3200"
       Title="SetupWindow">
     <Grid>
         <local:DragCanvas Visibility="Hidden" x:Name="MyDragCanvas" Panel.ZIndex="1" DragQuery="MyDragCanvas_DragQuery"></local:DragCanvas>
@@ -19,20 +19,18 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition/>
                     <RowDefinition Height="Auto"/>
-
                 </Grid.RowDefinitions>
                 <Label x:Name="PlayerNameDisplay" Grid.Row="0" Content="PlayerName"/>
                 <StackPanel x:Name="ShipPanel" Grid.Row="1">
-                    <Label x:Name="buttn" Content="Scout" MouseLeftButtonDown="ScoutLabelClick"  />
-                    <local:AddShipButtonControl MouseLeftButtonUp="AddShipButtonControl_MouseLeftButtonUp" MouseLeftButtonDown="CreateAndDragNewShip" ShipCount="2" NewShipType="BattleShip" />
-                    <local:AddShipButtonControl MouseLeftButtonUp="AddShipButtonControl_MouseLeftButtonUp" MouseLeftButtonDown="CreateAndDragNewShip" ShipCount="1" NewShipType="Aircraftcarrier" />
-                    <local:AddShipButtonControl MouseLeftButtonUp="AddShipButtonControl_MouseLeftButtonUp" MouseLeftButtonDown="CreateAndDragNewShip" ShipCount="3" NewShipType="Submarine"/>
-                    <local:AddShipButtonControl MouseLeftButtonUp="AddShipButtonControl_MouseLeftButtonUp" MouseLeftButtonDown="SelectShip"  ShipCount="4" NewShipType="Scout"/>
+                    <local:AddShipButtonControl MouseLeftButtonDown="AddShipClick" Inventory="1" NewVesselClass="AirCraft_Carrier"/>
+                    <local:AddShipButtonControl MouseLeftButtonDown="AddShipClick" Inventory="2" NewVesselClass="BattleShip" />
+                    <local:AddShipButtonControl MouseLeftButtonDown="AddShipClick" Inventory="3" NewVesselClass="Submarine" />
+                    <local:AddShipButtonControl MouseLeftButtonDown="AddShipClick" Inventory="4" NewVesselClass="Scout"  />
                     <Button x:Name="TestButton" Content="place a ship at 3,3" Click="TestButton_Click" />
                 </StackPanel>
                 <Button Content="Ships left: " Grid.Row="2"/>
             </Grid>
-            <local:PlayingField BoardSize="11,11" x:Name="playingField" Grid.ColumnSpan="1" Grid.Column="1" Width="{Binding ActualHeight, Mode=OneWay, RelativeSource={RelativeSource Self}}" PositionChanged="playingField_PositionChanged">
+            <local:PlayingField BoardSize="40,40" x:Name="playingField" Grid.ColumnSpan="1" Grid.Column="1" Width="{Binding ActualHeight, Mode=OneWay, RelativeSource={RelativeSource Self}}" PositionChanged="playingField_PositionChanged">
                 <Border BorderBrush="Orange" BorderThickness="2"/>
             </local:PlayingField>
         </Grid>

@@ -16,15 +16,56 @@ using System.Windows.Shapes;
 namespace BattleShipGame
 {
     /// <summary>
-    /// Interaction logic for SetupWindow.xaml
+    /// The Setup Window handles all the UI events for the user in order to populate a grid with ships
     /// </summary>
     public partial class SetupWindow : Page
     {
-        #region Properties
+       
+
+        /// <summary>
+        /// A Collection of Ships the Player can place on the board
+        /// </summary>
+        public List<Ship> PlacableShips
+        {
+            get { return (List<Ship>)GetValue(PlacableShipsProperty); }
+            set { SetValue(PlacableShipsProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for ShipContent.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty PlacableShipsProperty =
+            DependencyProperty.Register("PlacableShips", typeof(List<Ship>), typeof(SetupWindow), new PropertyMetadata(DefaultShipContent()));
+
+        /// <summary>
+        /// Returns the default amount of ships a A player has to put on the board
+        /// </summary>
+        private static object DefaultShipContent()
+        {
+            List<Ship> Result = new List<Ship>();
+            int TotalCarrierShi = 1;
+            int TotalBattleShip = 2;
+            int TotalSubmarines = 3;
+            int TotalScoutShips = 4;
+            CreateShips(Result, TotalScoutShips, Shiptype.Scout);
+            CreateShips(Result, TotalSubmarines, Shiptype.Submarine);
+            CreateShips(Result, TotalBattleShip, Shiptype.BattleShip);
+            CreateShips(Result, TotalCarrierShi, Shiptype.Aircraftcarrier);
+            return Result;
+        }
+        /// <summary>
+        /// creates a TOTALAMOUNTOFSHIPS of THISTYPE and ADDS THEM TO THE RESULT
+        /// </summary>
+        private static void CreateShips(List<Ship> result, int totalAmountOfShips,Shiptype thisType)
+        {
+            for (int i = 0; i < totalAmountOfShips; i++)
+            {
+                result.Add(new Ship());
+            }
+        }
+
         private void SelectShip(object sender, MouseButtonEventArgs e)
         {
             AddShipButtonControl ShipItemSender = sender as AddShipButtonControl;
-            Ship s = new Ship(ShipItemSender.NewShipType);
+            Ship s = new Ship();
             Size TileDim = playingField.GetTileSize(); // get the Size of A Tile 
             double resx = Grid.GetColumnSpan(s) * TileDim.Width;
             double resy = Math.Max(Grid.GetRow(s) * TileDim.Height, TileDim.Height);
@@ -35,13 +76,7 @@ namespace BattleShipGame
             this.ShipPanel.Children.Add(s);
             this.MyDragCanvas.StartDragDrop(s, MousePos);
         }
-        /*
-     * 
-     * - Drop/ Place Ship
-     * - Rotate Ship
-     * - Finish Setup
-     * -
-     */
+
         public Rectangle hitbox = new Rectangle();
 
         
@@ -66,25 +101,6 @@ namespace BattleShipGame
             PlayerNameDisplay.Content = gridIndex.ToString();
         }
 
-        private void ScoutLabelClick(object sender, MouseButtonEventArgs e)
-        {
-
-            //Label Sender = sender as Label;
-            //Point MouseOrigin = e.GetPosition(MyDragCanvas);
-            //// TODO create a ship
-            //Ship myShip = new Ship();
-            ////myShip.RenderSize = new Size(200, 200);
-            //Size grid = GameField.RenderSize;
-            //Size shipnewsize = new Size(grid.Width / 11 * 2, grid.Height / 11);
-            //myShip.Width = shipnewsize.Width;
-            //myShip.Height = shipnewsize.Height;
-            //setDragPosition(myShip, MouseOrigin, -10, -10);
-            //MyDragCanvas.IsHitTestVisible = true;
-            ////ContentLayout.IsHitTestVisible = false;
-            //DragOverlay.Children.Insert(0,myShip);
-            //DragOverlay.MouseMove += Dragging;
-        }
-        #region setDragPosition
         private void setDragPosition(UIElement dragElement, Point location)
         {
             setDragPosition(dragElement, location.X, location.Y, 0, 0);
@@ -106,55 +122,12 @@ namespace BattleShipGame
             Canvas.SetLeft(dragElement, x + offsetX);
             Canvas.SetTop(dragElement, y + offsetY);
         }
-        #endregion
-        private void Dragging(object sender, MouseEventArgs e)
-        {
+  
 
-        }
-
-        private void StopDragging()
-        {
-            //DragOverlay.IsHitTestVisible = false;
-            //ContentLayout.IsHitTestVisible = true;
-            //DragOverlay.MouseMove -= Dragging;
-            //DragOverlay.Children.Clear();
-        }
-
-        private void EndDrag(object sender, MouseButtonEventArgs e)
-        {
-        }
-
-        private void AddShipButtonControl_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            AddShipButtonControl Sender = sender as AddShipButtonControl;
-            Sender.ShipCount--;
-        }
-
-        private void CreateAndDragNewShip(object sender, MouseButtonEventArgs e)
-        {
-            //AddShipButtonControl Sender = sender as AddShipButtonControl;
-            //Shiptype TypeOfNewShip = Sender.NewShipType;
-            //Ship NewShip = CreateNewShip(TypeOfNewShip,GameField.RenderSize);
-            //InitializeDrag(NewShip, e.GetPosition(DragOverlay), new Point(0.5,0.5));
-
-        }
-
-        private void InitializeDrag(UIElement newShip, Point point1, Point point2)
-        {
-
-            //double arm = point2.X *(double) newShip.GetValue(WidthProperty);
-            //double army = point2.Y * (double) newShip.GetValue(HeightProperty);
-            //dragArm = new Point(-arm, -army);
-            //setDragPosition(newShip, point1, dragArm.X,dragArm.Y);
-            //DragOverlay.IsHitTestVisible = true;
-            //ContentLayout.IsHitTestVisible = false;
-            //DragOverlay.Children.Add(newShip);
-            //DragOverlay.MouseMove += Dragging;
-        }
 
         private Ship CreateNewShip(Shiptype typeOfNewShip, Size renderSize)
         {
-            Ship result = new Ship(typeOfNewShip);
+            Ship result = new Ship();
             double renderedWidth = renderSize.Width / 11 * Grid.GetColumnSpan(result);
             double renderedHeight = renderSize.Height / 11 * Grid.GetRowSpan(result);
             result.Width = renderedWidth;
@@ -162,13 +135,6 @@ namespace BattleShipGame
             return result;
         }
 
-        private void AddShipButtonControl_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            Size s = (Size)e.GetPosition(sender as AddShipButtonControl);
-            Ship myship = new Ship(Shiptype.Scout);
-            this.ShipPanel.Children.Add(myship);
-            this.MyDragCanvas.StartDragDrop(myship, s);
-        }
         private void MyDragCanvas_DragQuery(object sender, MouseEventArgs e)
         {
             DragCanvas DragSender = sender as DragCanvas;
@@ -236,9 +202,20 @@ namespace BattleShipGame
 
         private void TestButton_Click(object sender, RoutedEventArgs e)
         {
-            Ship a = new Ship(Shiptype.BattleShip);
+            Ship a = new Ship(VesselClass.Scout);
            /// Grid.SetRowSpan(a, 4);
             PlaceShip(new Point(3, 3), a);
+        }
+
+        private void AddShipClick(object sender, MouseButtonEventArgs e)
+        {
+            AddShipButtonControl Target = sender as AddShipButtonControl;
+            Target.Inventory--;
+            Ship NewShip = new Ship(Target.NewVesselClass);
+            NewShip.ShipOrientation = Orientation.Horizontal;
+            playingField.Children.Add(NewShip);
+            Point Spawn = playingField.GetSpawn();
+            PlayingField.SetElementPosition(NewShip, new Point((int)NewShip.Vessel,(int)NewShip.Vessel));
         }
     }
     public enum Shiptype { Scout, Submarine, BattleShip, Aircraftcarrier };

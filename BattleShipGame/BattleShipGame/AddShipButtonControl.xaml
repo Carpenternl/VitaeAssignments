@@ -10,9 +10,9 @@
         <ImageBrush/>
     </UserControl.BorderBrush>
     <StackPanel x:Name="ControlContent" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
-        <Label Content="{Binding NewShipType, ElementName=Controlcontainer}"/>
+        <Label Content="{Binding NewVesselClass, ElementName=Controlcontainer}"  />
         <Label x:Name="CounterBefore" Content="(" Padding="0,5,0,5"/>
-        <Label x:Name="Counter" Padding="0,5" Content="{Binding ShipCount, ElementName=Controlcontainer}" />
+        <Label x:Name="Counter" Padding="0,5" Content="{Binding Inventory, ElementName=Controlcontainer}" />
         <Label x:Name="CounterAfter" Content="left)"/>
     </StackPanel>
 </UserControl>

@@ -40,12 +40,12 @@ namespace BattleShipGame
         /// <param name="e"></param>
         private static void DraggableChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            DragCanvas DC = d as DragCanvas;
+            DragCanvas Target = d as DragCanvas;
 
-            DC.dragcontent.Children.Clear();
+            Target.dragcontent.Children.Clear();
             if(e.NewValue != null)
             {
-            DC.dragcontent.Children.Add(e.NewValue as UserControl);
+            Target.dragcontent.Children.Add(e.NewValue as UserControl);
             }
         }
 

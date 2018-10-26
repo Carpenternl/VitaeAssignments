@@ -5,8 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:BattleShipGame"
              mc:Ignorable="d" 
-             d:DesignHeight="200" d:DesignWidth="400" Background="Green" MouseRightButtonDown="UserControl_MouseRightButtonDown">
-    <Grid>
+             d:DesignHeight="200" d:DesignWidth="400" Background="Green">
+    <Grid x:Name="Frame">
             
     </Grid>
 </UserControl>
