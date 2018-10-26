@@ -64,7 +64,7 @@
             <Label Content="10" Grid.Row="9" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
         </Grid>
-        <Grid x:Name="GridContent" Grid.Row="1" Grid.Column="1" ShowGridLines="True" MouseMove="GridContent_MouseMove" PreviewMouseMove="CheckForCellMove" Background="#00000000">
+        <Grid x:Name="GridContent" Grid.Row="1" Grid.Column="1" ShowGridLines="True" MouseMove="GridContent_MouseMove" PreviewMouseMove="MouesMovedEvent" Background="#00000000">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition/>

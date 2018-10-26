@@ -44,11 +44,19 @@ namespace BattleShipGame
      */
         public Rectangle hitbox = new Rectangle();
 
+        
+
         public SetupWindow()
         {
             InitializeComponent();
         }
-        #endregion
+
+        private void PlaceShip(Point p, Ship s)
+        {
+            playingField.Children.Add(s);
+            PlayingField.SetElementPosition(s, p);
+        }
+
         private void GameField_MapHover(Point GridIndex)
         {
 
@@ -223,7 +231,14 @@ namespace BattleShipGame
         private void playingField_PositionChanged(object sender, MouseEventArgs e)
         {
             PlayingField P = sender as PlayingField;
-            PlayingField.SetElementPosition(P.Children[0], P.LastGridPoint);
+            PlayingField.SetElementPosition(P.Children[0], P.CurrentGridPosition);
+        }
+
+        private void TestButton_Click(object sender, RoutedEventArgs e)
+        {
+            Ship a = new Ship(Shiptype.BattleShip);
+           /// Grid.SetRowSpan(a, 4);
+            PlaceShip(new Point(3, 3), a);
         }
     }
     public enum Shiptype { Scout, Submarine, BattleShip, Aircraftcarrier };
