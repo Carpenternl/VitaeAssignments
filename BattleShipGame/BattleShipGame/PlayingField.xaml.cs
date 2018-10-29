@@ -563,13 +563,13 @@ namespace BattleShipGame
         // checks if the mouse has moved to a different cell during a mousemove, reducing event calls
         private void MouesMovedEvent(object sender, MouseEventArgs e)
         {
-            Point CursorPosition = e.GetPosition(GridContent);
-            Point NewGridPosition = SnapInt(CursorPosition);
-            if (NewGridPosition != CurrentGridPosition)
-            {
-                CurrentGridPosition = NewGridPosition;
-                PositionChanged(this, e);
-            }
+            //Point CursorPosition = e.GetPosition(GridContent);
+            //Point NewGridPosition = SnapInt(CursorPosition);
+            //if (NewGridPosition != CurrentGridPosition)
+            //{
+            //    CurrentGridPosition = NewGridPosition;
+            //    PositionChanged(this, e);
+            //}
         }
         // Event handler that gets called when the cursor moves to a different Cell.
         private void PlayingField_PositionChanged(object sender, MouseEventArgs e)

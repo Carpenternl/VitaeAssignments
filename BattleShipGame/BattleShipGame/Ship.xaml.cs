@@ -93,6 +93,7 @@ namespace BattleShipGame
             VesselClass VesselClassArg = Vessel;
             Grid Target = this.Frame;
             int Length = (int)VesselClassArg;
+
             Target.ColumnDefinitions.Clear();
             Target.RowDefinitions.Clear();
             switch (OrientationArg)

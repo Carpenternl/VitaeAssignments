@@ -20,8 +20,17 @@ namespace BattleShipGame
     /// </summary>
     public partial class DragCanvas : UserControl
     {
-        private Size dragArm;
-        private UIElement DraggableElement;
+
+
+        public Size MouseOffset
+        {
+            get { return (Size)GetValue(MouseOffsetProperty); }
+            set { SetValue(MouseOffsetProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for MouseOffset.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty MouseOffsetProperty =
+            DependencyProperty.Register("MouseOffset", typeof(Size), typeof(DragCanvas), new PropertyMetadata(new Size(.5,.5)));
 
         public UserControl MyDraggableElement
         {
@@ -45,66 +54,48 @@ namespace BattleShipGame
             Target.dragcontent.Children.Clear();
             if(e.NewValue != null)
             {
+                Target.Visibility = Visibility.Visible;
             Target.dragcontent.Children.Add(e.NewValue as UserControl);
             }
+            else
+            {
+                Target.Visibility = Visibility.Hidden;
+            }
         }
-
-        public delegate void DragAddHandler(object sender, EventArgs e);
-        public event DragAddHandler ElementAdded;
-        public delegate void DragRemoveHanlder(object sender, EventArgs e);
-        public event DragRemoveHanlder ElementRemoved;
-        public delegate void OnDragHandler(object sender, MouseEventArgs e);
-        public event OnDragHandler DragQuery;
-        public delegate void DragEndHandler(object sender, MouseButtonEventArgs e);
-        public event DragEndHandler ElementDropped;
-
 
         public DragCanvas()
         {
             InitializeComponent();
         }
 
-        public void RemoveDraggable()
-        {
-            UIElement elementToRemove = DraggableElement;
-            this.dragcontent.Children.Remove(DraggableElement);
-            ElementRemoved(elementToRemove, new EventArgs());
-        }
 
-        private void DropElement(object sender, MouseButtonEventArgs e)
-        {
-            UIElement Sender = sender as UIElement;
-        }
 
-        public void StartDragDrop(UserControl Target,Size s)
-        {
-            ((Panel)Target.Parent).Children.Remove(Target);
-            dragArm = s;
-            MyDraggableElement = Target;
-            this.PreviewMouseMove += OnPrevMouseMoveDragElement;
-            this.IsHitTestVisible = true;
-        }
+        public delegate void OnDrag(object sender, MouseEventArgs e);
+        public event OnDrag Drag;
+        public delegate void DragStopHandler(object sender, MouseEventArgs e);
+        public event DragStopHandler DragStop;
 
-        // Drag The Element To the Mouse Location
-        private void OnPrevMouseMoveDragElement(object sender, MouseEventArgs e)
+        private void DragQuery(object sender, MouseEventArgs e)
         {
-            //Move The Element With The MouseButton
             if(e.LeftButton == MouseButtonState.Pressed)
             {
-                Canvas.SetLeft(MyDraggableElement, e.GetPosition(this).X - dragArm.Width);
-                Canvas.SetTop(MyDraggableElement, e.GetPosition(this).Y - dragArm.Height);
-                //The Element Has Moved, Check if the Element is hovering over the Playing field
-               DragQuery(sender, e);
+                DragCanvas Target = sender as DragCanvas;
+                Point CursorLocation = e.GetPosition(Target);
+                Size n = Target.RenderSize;
+                double OffsetX = CursorLocation.X - (double)MyDraggableElement.ActualWidth * MouseOffset.Width;
+                double OffsetY = CursorLocation.Y - (double)MyDraggableElement.ActualHeight * MouseOffset.Height;
+                Canvas.SetLeft(MyDraggableElement, OffsetX);
+                Canvas.SetTop(MyDraggableElement, OffsetY);
+                Drag(MyDraggableElement, e);
             }
             else
             {
-                //Stop MouseMoveEvent and disable Hittesting 
-                this.PreviewMouseMove -= OnPrevMouseMoveDragElement;
-                this.IsHitTestVisible = false;
-                //Drop The Element
-            }
 
-            e.Handled = true;
+                UserControl Data = MyDraggableElement;
+                MyDraggableElement = null;
+                DragStop(Data, e);
+                
+            }
         }
     }
 }
