@@ -31,7 +31,7 @@
                 <Button Content="Ships left: " Grid.Row="2"/>
             </Grid>
             <local:PlayingField BoardSize="10,10" x:Name="playingField" Grid.ColumnSpan="1" Grid.Column="1" Width="{Binding ActualHeight, Mode=OneWay, RelativeSource={RelativeSource Self}}" PositionChanged="playingField_PositionChanged" OverridesDefaultStyle="True">
-                <Border BorderBrush="Orange" BorderThickness="2"/>
+                <Border  BorderBrush="Orange" BorderThickness="2"/>
             </local:PlayingField>
         </Grid>
     </Grid>

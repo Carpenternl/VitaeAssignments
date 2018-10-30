@@ -225,7 +225,22 @@ namespace BattleShipGame
 
         private void DragCanvasOverlay_Drag(object sender, MouseEventArgs e)
         {
-
+            Ship TargetShip = sender as Ship;
+            Rect ShipHitBox = GetHitBox(TargetShip, this);
+            Rect TargetGridHitBox = GetHitBox(playingField,this);
+            if (HitBoxOverlap(ShipHitBox, TargetGridHitBox))
+            {
+                Rect DerivedHitbox = GetHitBox(TargetShip, playingField);
+                Point TargetShipLoc = playingField.SnapInt(DerivedHitbox.Location);
+                PlayingField.SetElementPosition(playingField.Children[0], TargetShipLoc);
+            }
+        }
+        private Rect GetHitBox(UIElement Target, UIElement Origin)
+        {
+            Point TargetPoint = Target.TranslatePoint(new Point(0, 0), Origin);
+            Size TargetSize = Target.RenderSize;
+            Rect Result = new Rect(TargetPoint, TargetSize);
+            return Result;
         }
     }
     public enum Shiptype { Scout, Submarine, BattleShip, Aircraftcarrier };
