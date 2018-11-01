@@ -8,10 +8,6 @@ namespace RomanCalculator
 {
     public static class Numeral
     {
-        public enum Romans { I = 1, V = 5, X = 10, L = 50, C = 100, D = 500, M = 1000 }
-        public static readonly Romans[] Possible = { Romans.I, Romans.V, Romans.X, Romans.L, Romans.C, Romans.D, Romans.M };
-        public static char[] PossibleCharacters = { 'I', 'V', 'X', 'L', 'C', 'D', 'M' };
-        public static int[] PossibleIntegers = { 1, 5, 10, 50, 100, 500, 1000 };
         public static int[] IntegerValues = { 1, 5, 10, 50, 100, 500, 1000 };
         public static char[] CharacterValues = { 'I', 'V', 'X', 'L', 'C', 'D', 'M' };
 
@@ -25,7 +21,9 @@ namespace RomanCalculator
             string RomanNumeralString = Formatted(RomanNumerals);
             return RomanNumeralString;
         }
-
+        /// <summary>
+        /// converts an int to an unformatted roman numeral 439 => CCCCXXXVIIII
+        /// </summary>
         private static char[] GetRomanNumerals(int value)
         {
             List<char> RomValues = new List<char>();
@@ -42,29 +40,22 @@ namespace RomanCalculator
             }
             return RomValues.ToArray();
         }
+        /// <summary>
+        /// Formats an unformatted roman numeral CCCCXXXVIIII(439) => CDXXXIX
+        /// </summary>
         private static string Formatted(char[] roms)
         {
             List<int> intvalues = new List<int>();
+            // Extract the integer Values;
             for (int i = 0; i < roms.Length; i++)
             {
                 intvalues.Add(ToInt(roms[i].ToString()));
-
             }
-            int[] ints = intvalues.ToArray();
-            for (int i = 0; i < intvalues.Count - 3; i++)
-            {
-                if (roms[i] != 'M')
-                {
-                    FindFourInARow(intvalues, i);
-                }
-            }
-            for (int i = 0; i < intvalues.Count - 2; i++)
-            {
-                if (roms[i] != 'M')
-                {
-                    Removesplits(intvalues, i);
-                }
-            }
+            // Converts CCCCXXXVIIII => CDXXXVIV
+            Remove4Pairs(roms, intvalues);
+            // Converts CDXXXVIV => CDXXXIX
+            CleanupPass(roms, intvalues);
+            // Build the string
             StringBuilder strngBldr = new StringBuilder();
             foreach (int item in intvalues)
             {
@@ -72,6 +63,30 @@ namespace RomanCalculator
             }
             return strngBldr.ToString();
 
+        }
+        
+        private static void CleanupPass(char[] roms, List<int> intvalues)
+        {
+            for (int i = 0; i < intvalues.Count - 2; i++)
+            {
+                if (roms[i] != 'M')
+                {
+                    Removesplits(intvalues, i);
+                }
+            }
+        }
+        /// <summary>
+        /// Converts CCCCXXXVIIII => CDXXXVIV
+        /// </summary>
+        private static void Remove4Pairs(char[] roms, List<int> intvalues)
+        {
+            for (int i = 0; i < intvalues.Count - 3; i++)
+            {
+                if (roms[i] != 'M')
+                {
+                    FindFourInARow(intvalues, i);
+                }
+            }
         }
 
         private static void FindFourInARow(List<int> intvalues, int i)
