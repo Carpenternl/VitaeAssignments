@@ -24,14 +24,9 @@ namespace RomanCalculator
             InitializeComponent();
         }
 
-        private void OK_Click(object sender, RoutedEventArgs e)
+        private void OK_Button_Click(object sender, RoutedEventArgs e)
         {
             this.DialogResult = true;
-            this.Close();
-        }
-
-        private void Cancel_Click(object sender, RoutedEventArgs e)
-        {
             this.Close();
         }
     }

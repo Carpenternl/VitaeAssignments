@@ -5,18 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RomanCalculator"
         mc:Ignorable="d"
-        Title="ValueWarningWindow" Height="200" Width="300">
+        Title="ERROR - INVALID VALUE" HorizontalAlignment="Left" VerticalAlignment="Top" SizeToContent="WidthAndHeight" MinWidth="200" Margin="1,0,0,0" MaxWidth="800">
     <Grid Margin="5">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition />
         </Grid.RowDefinitions>
-        <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="1" x:Name="Message" Content="Hello World"/>
-        <Button Margin="0,2,2,2" Grid.Row="1" Grid.Column="0" x:Name="Cancel" Content="CANCEL" IsCancel="True" Click="Cancel_Click" />
-        <Button Margin="2,2,0,2" Grid.Row="1" Grid.Column="1" x:Name="OK" Content="OK" IsDefault="True" Click="OK_Click"/>
+        <Label Grid.Row="0" Grid.Column="0" x:Name="ErrorMessage" Content="You are not supposed to see this message"
+               Margin="0,0,0.2,0.4" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+        <Button x:Name="OK_Button" Grid.Column="0" Grid.Row="1" Content="OK" IsDefault="True" Click="OK_Button_Click" VerticalAlignment="Bottom"/>
     </Grid>
 </Window>

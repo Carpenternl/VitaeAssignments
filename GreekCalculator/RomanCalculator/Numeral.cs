@@ -10,164 +10,188 @@ namespace RomanCalculator
     {
         public enum Romans { I = 1, V = 5, X = 10, L = 50, C = 100, D = 500, M = 1000 }
         public static readonly Romans[] Possible = { Romans.I, Romans.V, Romans.X, Romans.L, Romans.C, Romans.D, Romans.M };
-        public static char[] DataString = { 'I', 'V', 'X', 'L', 'C', 'D', 'M' };
-        public static int[] PossibleValue = { 1, 5, 10, 50, 100, 500, 1000 };
+        public static char[] PossibleCharacters = { 'I', 'V', 'X', 'L', 'C', 'D', 'M' };
+        public static int[] PossibleIntegers = { 1, 5, 10, 50, 100, 500, 1000 };
+        public static int[] IntegerValues = { 1, 5, 10, 50, 100, 500, 1000 };
+        public static char[] CharacterValues = { 'I', 'V', 'X', 'L', 'C', 'D', 'M' };
 
-        //Convert an integer to a string
+        /// <summary>
+        /// Convert an integer to a POSITIVE roman numeral
+        /// </summary>
         public static string ToString(int value)
         {
-            List<int> intValues = new List<int>();
-            // 1. get The Absolute value, to make conversion easier;
             int AbsValue = Math.Abs(value);
-            // 2. Peform a basic Conversion Pass
-            Romans[] RomanValues = RawConvert(AbsValue);
-            Romans[] FormattedRomanValues = FormatRomans(RomanValues);
-            StringBuilder d = new StringBuilder();
-            foreach (var item in FormattedRomanValues)
-            {
-                d.Append(item);
-            }
-            return d.ToString();
+            char[] RomanNumerals = GetRomanNumerals(AbsValue);
+            string RomanNumeralString = Formatted(RomanNumerals);
+            return RomanNumeralString;
         }
 
-        private static Romans[] FormatRomans(Romans[] romanValues)
+        private static char[] GetRomanNumerals(int value)
         {
-            romanValues = RemoveSetPatterns(romanValues);
-            romanValues = RemoveSplitPatterns(romanValues);
-            return romanValues;
-        }
-
-        private static Romans[] RemoveSplitPatterns(Romans[] romanValues)
-        {
-            List<Romans> Result = romanValues.ToList();
-            for (int Index = 1; Index < Result.Count - 1; Index++)
+            List<char> RomValues = new List<char>();
+            while (value > 0)
             {
-                if (FourPlusFive(Result[Index - 1], Result[Index], Result[Index + 1]))
+                for (int i = IntegerValues.Length - 1; i >= 0; i--)
                 {
-                    int Key = Possible.ToList().IndexOf(Result[Index + 1]);
-                    if (Key < PossibleValue.Length - 1)
+                    while (IntegerValues[i] <= value)
                     {
-                        Result[Index + 1] = Possible[Key + 1];
-                        Result.RemoveAt(Index - 1);
+                        RomValues.Add(ToCharacter(IntegerValues[i]));
+                        value -= IntegerValues[i];
                     }
                 }
             }
-            return Result.ToArray();
+            return RomValues.ToArray();
+        }
+        private static string Formatted(char[] roms)
+        {
+            List<int> intvalues = new List<int>();
+            for (int i = 0; i < roms.Length; i++)
+            {
+                intvalues.Add(ToInt(roms[i].ToString()));
+
+            }
+            int[] ints = intvalues.ToArray();
+            for (int i = 0; i < intvalues.Count - 3; i++)
+            {
+                if (roms[i] != 'M')
+                {
+                    FindFourInARow(intvalues, i);
+                }
+            }
+            for (int i = 0; i < intvalues.Count - 2; i++)
+            {
+                if (roms[i] != 'M')
+                {
+                    Removesplits(intvalues, i);
+                }
+            }
+            StringBuilder strngBldr = new StringBuilder();
+            foreach (int item in intvalues)
+            {
+                strngBldr.Append(ToCharacter(item));
+            }
+            return strngBldr.ToString();
+
         }
 
-        private static bool FourPlusFive(Romans romans1, Romans romans2, Romans romans3)
+        private static void FindFourInARow(List<int> intvalues, int i)
         {
-            if (romans1 == romans3 & romans2 != romans1)
+            if (intvalues[i] == intvalues[i + 1] & intvalues[i + 2] == intvalues[i + 3] & intvalues[i] == intvalues[i + 2])
             {
-                return true;
+                char c = ToCharacter(intvalues[i]);
+                char n = Shift(c);
+
+                intvalues[i + 1] = ToInt(n);
+                intvalues.RemoveRange(i + 2, 2);
+            }
+        }
+        private static void Removesplits(List<int> list, int i)
+        {
+            if (list[i] == list[i + 2] & list[i]> list[i+1])
+            {
+                char c = ToCharacter(list[i]);
+                char n = Shift(c);
+                list[i + 2] = n;
+                list.RemoveAt(i);
+            }
+        }
+        private static char Shift(char c)
+        {
+            int key = CharacterValues.ToList().IndexOf(c);
+            return CharacterValues[key + 1];
+        }
+
+
+
+
+        /// <summary>
+        /// Convert a roman numeral string to an integer
+        /// </summary>
+        public static int ToInt(string value)
+        {
+            // 1: set to uppercase
+            string UpperCaseValue = value.ToUpper();
+            string ValidString = RemoveInvalidChars(UpperCaseValue, "MDCLXVI");
+            int[] NumeralValues = ToInteger(ValidString);
+            if (ValidFormat(NumeralValues))
+            {
+                int myResult = 0;
+                for (int i = 0; i < NumeralValues.Length; i++)
+                {
+                    int Current = NumeralValues[i];
+                    if (i < NumeralValues.Length - 1)
+                    {
+                        int Next = NumeralValues[i + 1];
+                        if (Current < Next)
+                        {
+                            myResult -= Current;
+                            continue;
+                        }
+                    }
+                    myResult += Current;
+                }
+                return myResult;
             }
             else
             {
-                return false;
+                return 0;
             }
         }
 
-        private static Romans[] RemoveSetPatterns(Romans[] romanValues)
+        private static bool ValidFormat(int[] numeralValues)
         {
-            List<Romans> Result = romanValues.ToList();
-            for (int i = 3; i < Result.Count; i++)
+            for (int i = 0; i < numeralValues.Length - 2; i++)
             {
-                if (FourInARow(Result, i))
+                int a = numeralValues[i];
+                int b = numeralValues[i + 1];
+                int c = numeralValues[i + 2];
+                if (!(a >= b & a >= c))
                 {
-                    //Set found, get value
-                    int valueKey = Possible.ToList().IndexOf(Result[i]);
-                    if (valueKey < PossibleValue.Length - 1)
-                    {
-                        Result[i] = Possible[valueKey + 1];
-                        Result.RemoveRange(i - 2, 2);
-                    }
+                    return false;
                 }
             }
-            return Result.ToArray();
+            return true;
         }
 
-        private static bool FourInARow(List<Romans> Result, int i)
+        private static int[] ToInteger(string validString)
         {
-            return Result[i] == Result[i - 1] & Result[i - 2] == Result[i - 3] & Result[i] == Result[i - 2];
-        }
-
-        private static Romans[] RawConvert(int absValue)
-        {
-            List<Romans> Result = new List<Romans>();
-
-            while (absValue > 0)
+            List<int> values = new List<int>();
+            foreach (var c in validString)
             {
-                for (int Key = PossibleValue.Length - 1; Key >= 0; Key--)
+                values.Add(ToInt(c));
+            }
+            return values.ToArray();
+        }
+
+        private static string RemoveInvalidChars(string value, string compareables)
+        {
+            StringBuilder Result = new StringBuilder();
+            foreach (char c in value)
+            {
+                if (compareables.Contains(c))
                 {
-                    while (PossibleValue[Key] <= absValue)
-                    {
-                        Result.Add((Romans)PossibleValue[Key]);
-                        absValue -= PossibleValue[Key];
-                    }
+                    Result.Append(c);
                 }
             }
-            return Result.ToArray();
+            return Result.ToString();
         }
 
-        private static Romans[] RawConvert(char[] workableCharacters)
+        private static void ShowError(string value)
         {
-            List<Romans> Result = new List<Romans>();
-            for (int i = 0; i < workableCharacters.Length; i++)
-            {
-                char item = workableCharacters[i];
-                int itemKey = DataString.ToList().IndexOf(item);
-                Result.Add(Possible[itemKey]);
-            }
-            return Result.ToArray();
-        }
-        public static int ToInt(string value)
-        {
-            // 1: Get our characters
-            char[] characters = value.ToCharArray();
-            // 2: Remove invalid Characters
-            char[] WorkableCharacters = RemoveInvalidCharacters(characters);
-            // 3: Convert To Roman Characters
-            Romans[] RomanCharacters = RawConvert(WorkableCharacters);
-            // 4: Simplyfy Roman Characters (Remove character overuse)
-            RomanCharacters = Simplify(RomanCharacters);
-            foreach (var item in RomanCharacters)
-            {
-                Console.Write(item.ToString());
-            }
-            Console.Write("\n");
-            return 0;
-            
+            ValueWarningWindow w = new ValueWarningWindow();
+            w.ErrorMessage.Content = $"entered Value: {value} is invalid";
+            w.ShowDialog();
         }
 
-        private static Romans[] Simplify(Romans[] romanCharacters)
+        private static char ToCharacter(int value)
         {
-            List<Romans> Result = romanCharacters.ToList();
-            int Offset = 1;
-            // TODO
-            return Result.ToArray();
+            int Key = IntegerValues.ToList().IndexOf(value);
+            return CharacterValues[Key];
         }
-
-        private static Romans[] Replace(int Amount, Romans newNum)
+        private static int ToInt(char value)
         {
-            Romans[] Result = new Romans[Amount];
-            for (int Index = 0; Index < Amount; Index++)
-            {
-                Result[Index] = newNum;
-            }
-            return Result;
+            int Key = CharacterValues.ToList().IndexOf(value);
+            return IntegerValues[Key];
         }
-
-        private static char[] RemoveInvalidCharacters(char[] characters)
-    {
-        List<Char> Result = new List<char>();
-        for (int i = 0; i < characters.Length; i++)
-        {
-            if (DataString.Contains(characters[i]))
-            {
-                Result.Add(characters[i]);
-            }
-        }
-        return Result.ToArray();
     }
-}
 }

@@ -37,9 +37,12 @@ namespace RomanCalculator
         {
             string text = this.value2.Text;
             int a = Numeral.ToInt(text);
+            if (a != 0)
+            {
             string d = Numeral.ToString(a);
-            this.ValueRes.Content = a;
             this.result2d.Content = d;
+            }
+            this.ValueRes.Content = a;
         }
     }
 }
